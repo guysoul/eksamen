@@ -1,6 +1,6 @@
 const pokemonContainer = document.querySelector(".pokemon-container");
 
-let pokemonList;
+//let pokemonList;
 
 //Read
 async function fetchPokemonList() {
@@ -21,17 +21,18 @@ async function fetchPokemonInformation(pokeURL) {
   return {
     pokemonName: pokemonData.name,
     pokemonImage: pokemonData.sprites.front_default,
-    pokemonTypes: pokemonData.types
-      .map((PokemonType) => PokemonType.type.name)
-      .join(", "),
+    pokemonTypes: pokemonData.types[0].type.name,
   };
 }
 
 async function fetchAndShowPokemon() {
   try {
-    pokemonList = await fetchPokemonList();
-    const pokemonDetail = pokemonList.map();
-    showAllPokemons();
+    const pokemonList = await fetchPokemonList();
+    const pokemonDetail = pokemonList.map((pokeMonster) =>
+      fetchPokemonInformation(pokeMonster.url)
+    );
+    const pokemonDetails = await Promise.all(pokemonDetail);
+    showAllPokemons(pokemonDetails);
   } catch (error) {
     console.error("Unable to load pokemon list!", error);
   }
@@ -39,14 +40,15 @@ async function fetchAndShowPokemon() {
 
 //console.log(fetchAndShowPokemon());
 
-function showAllPokemons() {
+function showAllPokemons(pokemonDetails) {
   pokemonContainer.innerHTML = "";
 
-  pokemonList.forEach((pokeMonster, index) => {
+  pokemonDetails.forEach((pokeMonster) => {
     const pokedexCard = document.createElement("div");
-
-    pokedexCard.innerHTML = `<h3>Name : ${pokeMonster.name}</h3>
-                               <h3>URL : ${pokeMonster.url}</h3>`;
+    pokedexCard.className = "pokemon-card";
+    pokedexCard.innerHTML = ` <img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}">
+                              <h3>Name : ${pokeMonster.pokemonName}</h3>
+                               <h3>Type : ${pokeMonster.pokemonTypes}</h3>`;
 
     pokemonContainer.appendChild(pokedexCard);
   });
