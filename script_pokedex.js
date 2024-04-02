@@ -13,9 +13,24 @@ async function fetchPokemonList() {
 
 //console.log(fetchPokemonList());
 
+//Fetch all details of a pokemon
+async function fetchPokemonInformation(pokeURL) {
+  const fetchPokemonResponse = await fetch(pokeURL);
+  const pokemonData = await fetchPokemonResponse.json();
+
+  return {
+    pokemonName: pokemonData.name,
+    pokemonImage: pokemonData.sprites.front_default,
+    pokemonTypes: pokemonData.types
+      .map((PokemonType) => PokemonType.type.name)
+      .join(", "),
+  };
+}
+
 async function fetchAndShowPokemon() {
   try {
     pokemonList = await fetchPokemonList();
+    const pokemonDetail = pokemonList.map();
     showAllPokemons();
   } catch (error) {
     console.error("Unable to load pokemon list!", error);
