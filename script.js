@@ -8,7 +8,7 @@ async function fetchPokemonList() {
     "https://pokeapi.co/api/v2/pokemon/?limit=50"
   );
   let pokemonResult = await pokemonRequest.json();
-  return pokemonResult;
+  return pokemonResult.results;
 }
 
 //console.log(fetchPokemonList());
@@ -16,12 +16,13 @@ async function fetchPokemonList() {
 async function fetchAndShowPokemon() {
   try {
     pokemonList = await fetchPokemonList();
-  } catch {
+    showAllPokemons();
+  } catch (error) {
     console.error("Unable to load pokemon list!", error);
   }
 }
 
-console.log(fetchAndShowPokemon());
+//console.log(fetchAndShowPokemon());
 
 function showAllPokemons() {
   pokemonContainer.innerHTML = "";
@@ -29,11 +30,11 @@ function showAllPokemons() {
   pokemonList.forEach((pokeMonster, index) => {
     const pokedexCard = document.createElement("div");
 
-    pokedexCard.innerHTML = `<h3>Name : ${pokeMonster.name}</h3><br>
+    pokedexCard.innerHTML = `<h3>Name : ${pokeMonster.name}</h3>
                                <h3>URL : ${pokeMonster.url}</h3>`;
 
     pokemonContainer.appendChild(pokedexCard);
   });
 }
 
-showAllPokemons();
+fetchAndShowPokemon();
