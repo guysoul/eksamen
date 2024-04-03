@@ -63,18 +63,55 @@ async function fetchAndShowPokemon() {
 
 //console.log(fetchAndShowPokemon());
 
+// reference to pokemon colour types
+//www.pokemonaaah.net/artsyfartsy/colordex/
+function pokemonTypeColor(color) {
+  const colorType = {
+    normal: "#AAB09F",
+    fire: "#EA7A3C",
+    water: "#539AE2",
+    electric: "#E5C531",
+    grass: "#71C558",
+    ice: "#70CBD4",
+    fighting: "#CB5F48",
+    poison: "#B468B7",
+    ground: "#CC9F4F",
+    flying: "#7DA6DE",
+    psychic: "#E5709B",
+    bug: "#94BC4A",
+    rock: "#B2A061",
+    ghost: "#846AB6",
+    dragon: "#6A7BAF",
+    dark: "#736C75",
+    steel: "#89A1B0",
+    fairy: "#E397D1",
+  };
+
+  if (colorType[color]) {
+    return colorType[color];
+  } else {
+    return "none";
+  }
+}
+
 function pokemonCard(pokemonDetails) {
   pokemonContainer.innerHTML = "";
 
   pokemonDetails.forEach((pokeMonster) => {
+    const bgColorCard = pokemonTypeColor(pokeMonster.pokemonTypes);
     const pokedexCard = document.createElement("div");
+
+    pokedexCard.style.background = bgColorCard;
     pokedexCard.className = "pokemon-card";
     pokedexCard.innerHTML = ` <img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}">
-                              <h3>Name : ${pokeMonster.pokemonName}</h3>
-                               <h3>Type : ${pokeMonster.pokemonTypes}</h3>
+                              <p>Name : ${pokeMonster.pokemonName}</p>
+                               <p>Type : ${pokeMonster.pokemonTypes}</p>
                                <button class="save-btn">Save</button>
                                <button class="edit-btn">Edit</button>
                                <button class="delete-btn">Delete</button>`;
+    pokedexCard.style["border-radius"] = "15px";
+    pokedexCard.style.border = "2px #000000";
+    pokedexCard.style.padding = "10px";
 
     const saveBtn = pokedexCard.querySelector(".save-btn");
     saveBtn.addEventListener("click", () => {
