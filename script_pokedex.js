@@ -32,7 +32,7 @@ async function fetchAndShowPokemon() {
       fetchPokemonInformation(pokeMonster.url)
     );
     const pokemonDetails = await Promise.all(pokemonDetail);
-    showAllPokemons(pokemonDetails);
+    pokemonCard(pokemonDetails);
   } catch (error) {
     console.error("Unable to load pokemon list!", error);
   }
@@ -40,7 +40,7 @@ async function fetchAndShowPokemon() {
 
 //console.log(fetchAndShowPokemon());
 
-function showAllPokemons(pokemonDetails) {
+function pokemonCard(pokemonDetails) {
   pokemonContainer.innerHTML = "";
 
   pokemonDetails.forEach((pokeMonster) => {
@@ -48,7 +48,31 @@ function showAllPokemons(pokemonDetails) {
     pokedexCard.className = "pokemon-card";
     pokedexCard.innerHTML = ` <img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}">
                               <h3>Name : ${pokeMonster.pokemonName}</h3>
-                               <h3>Type : ${pokeMonster.pokemonTypes}</h3>`;
+                               <h3>Type : ${pokeMonster.pokemonTypes}</h3>
+                               <button class="save-btn">Save</button>
+                               <button class="edit-btn">Edit</button>
+                               <button class="delete-btn">Delete</button>`;
+
+    const saveBtn = pokedexCard.querySelector(".save-btn");
+    saveBtn.addEventListener("click", () => {
+      // Insert action later
+      console.log("Save button has been clicked for ", pokeMonster.pokemonName);
+    });
+
+    const editBtn = pokedexCard.querySelector(".edit-btn");
+    editBtn.addEventListener("click", () => {
+      // Insert action later
+      console.log("Edit button has been clicked for ", pokeMonster.pokemonName);
+    });
+
+    const deleteBtn = pokedexCard.querySelector(".delete-btn");
+    deleteBtn.addEventListener("click", () => {
+      // Insert action later
+      console.log(
+        "Delete button has been clicked for ",
+        pokeMonster.pokemonName
+      );
+    });
 
     pokemonContainer.appendChild(pokedexCard);
   });
