@@ -1,11 +1,15 @@
 const pokemonContainer = document.querySelector(".pokemon-container");
-
+pokemonContainer.style.display = "flex";
+pokemonContainer.style["align-content"] = "flex-start";
+pokemonContainer.style["flex-wrap"] = "wrap";
+pokemonContainer.style["row-gap"] = "10px";
+pokemonContainer.style["gap"] = "10px 20px";
 //let pokemonList;
 
 //Read
 async function fetchPokemonList() {
   const pokemonRequest = await fetch(
-    "https://pokeapi.co/api/v2/pokemon/?limit=50"
+    "https://pokeapi.co/api/v2/pokemon/?limit=50&offset=100"
   );
   let pokemonResult = await pokemonRequest.json();
   return pokemonResult.results;
