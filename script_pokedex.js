@@ -1,9 +1,28 @@
+const mainContainer = document.querySelector(".main-container");
 const pokemonContainer = document.querySelector(".pokemon-container");
+const pokemonFavorite = document.querySelector(".pokemon-favorite");
+
+mainContainer.style.display = "flex";
+mainContainer.style.height = "100%";
+
 pokemonContainer.style.display = "flex";
+pokemonContainer.style["flex"] = "1";
 pokemonContainer.style["align-content"] = "flex-start";
 pokemonContainer.style["flex-wrap"] = "wrap";
 pokemonContainer.style["row-gap"] = "10px";
 pokemonContainer.style["gap"] = "10px 20px";
+pokemonContainer.style.height = "100%";
+pokemonContainer.style["background-color"] = "lightblue";
+
+pokemonFavorite.style.display = "flex";
+pokemonFavorite.style["flex"] = "1";
+pokemonFavorite.style["align-content"] = "flex-start";
+pokemonFavorite.style["flex-wrap"] = "wrap";
+pokemonFavorite.style["row-gap"] = "10px";
+pokemonFavorite.style["gap"] = "10px 20px";
+pokemonFavorite.style.height = "100%";
+pokemonFavorite.style["background-color"] = "lightgreen";
+
 //let pokemonList;
 
 //Read
