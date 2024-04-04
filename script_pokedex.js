@@ -2,6 +2,9 @@ const mainContainer = document.querySelector(".main-container");
 const pokemonContainer = document.querySelector(".pokemon-container");
 const pokemonFavorite = document.querySelector(".pokemon-favorite");
 
+const filterbtn = document.querySelectorAll(".filter-btn");
+filterbtn.forEach;
+
 mainContainer.style.display = "flex";
 mainContainer.style.height = "100%";
 
@@ -23,8 +26,6 @@ pokemonFavorite.style["gap"] = "10px 20px";
 pokemonFavorite.style.height = "100%";
 pokemonFavorite.style["background-color"] = "lightgreen";
 
-//let pokemonList;
-
 //Read
 async function fetchPokemonList() {
   const pokemonRequest = await fetch(
@@ -34,9 +35,7 @@ async function fetchPokemonList() {
   return pokemonResult.results;
 }
 
-//console.log(fetchPokemonList());
-
-//Fetch all details of a pokemon
+//Fetch all secondary details of a pokemon
 async function fetchPokemonInformation(pokeURL) {
   const fetchPokemonResponse = await fetch(pokeURL);
   const pokemonData = await fetchPokemonResponse.json();
@@ -59,6 +58,11 @@ async function fetchAndShowPokemon() {
   } catch (error) {
     console.error("Unable to load pokemon list!", error);
   }
+}
+
+async function fetchFilterPokemon() {
+  try {
+  } catch {}
 }
 
 //console.log(fetchAndShowPokemon());
