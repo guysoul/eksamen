@@ -3,7 +3,6 @@ const pokemonContainer = document.querySelector(".pokemon-container");
 const pokemonFavorite = document.querySelector(".pokemon-favorite");
 
 const filterbtn = document.querySelectorAll(".filter-btn");
-filterbtn.forEach;
 
 mainContainer.style.display = "flex";
 mainContainer.style.height = "100%";
@@ -60,12 +59,39 @@ async function fetchAndShowPokemon() {
   }
 }
 
-async function fetchFilterPokemon() {
+async function fetchFilterPokemon(type) {
   try {
-  } catch {}
+    const pokemonFilteredList = await fetchPokemonList();
+    const pokemonFilteredDetail = pokemonFilteredList.map((pokeMonster) =>
+      fetchPokemonInformation(pokeMonster.url)
+    );
+
+    const pokemonFilteredDetails = await Promise.all(pokemonFilteredDetail);
+    let filteredPokemon;
+
+    if (type === "all") {
+      filteredPokemon = pokemonFilteredDetails;
+    } else {
+      filteredPokemon = pokemonFilteredDetails.filter((pokemon) =>
+        pokemon.pokemonTypes.includes(type)
+      );
+    }
+
+    console.log("filtered POkemon", filteredPokemon);
+
+    pokemonCard(filteredPokemon);
+  } catch (error) {
+    console.error("Unable to load pokemon list!", error);
+  }
 }
 
-//console.log(fetchAndShowPokemon());
+filterbtn.forEach((button) => {
+  button.addEventListener("click", () => {
+    const chosenType = button.getAttribute("data-pokemonType");
+    console.log("Chosen Type", chosenType);
+    fetchFilterPokemon(chosenType);
+  });
+});
 
 // reference to pokemon colour types
 //www.pokemonaaah.net/artsyfartsy/colordex/
