@@ -49,12 +49,21 @@ async function fetchPokemonInformation(pokeURL) {
 
 async function fetchAndShowPokemon() {
   try {
+    let oldAndNewPokemon = [];
+
     const pokemonList = await fetchPokemonList();
     const pokemonDetail = pokemonList.map((pokeMonster) =>
       fetchPokemonInformation(pokeMonster.url)
     );
-    const pokemonDetails = await Promise.all(pokemonDetail);
-    pokemonCard(pokemonDetails);
+
+    const pokemonApiDetails = await Promise.all(pokemonDetail);
+    oldAndNewPokemon = [...oldAndNewPokemon, ...pokemonApiDetails];
+
+    const pokemonStorageDetails =
+      JSON.parse(localStorage.getItem("pokemonList")) || [];
+    oldAndNewPokemon = [...oldAndNewPokemon, ...pokemonStorageDetails];
+
+    pokemonCard(oldAndNewPokemon);
   } catch (error) {
     console.error("Unable to load pokemon list!", error);
   }
@@ -93,10 +102,6 @@ filterBtn.forEach((button) => {
 });
 
 //Write
-function fetchNewPokemonFromLocal() {
-  let pokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
-  pokemonCard(pokemonList);
-}
 
 function addNewPokemon() {
   const newPokemonImage =
