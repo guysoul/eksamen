@@ -118,6 +118,13 @@ filterBtn.forEach((button) => {
 });
 
 //Write
+function favoritePokemon(favePokemon) {
+  let savedPokemon = JSON.parse(localStorage.getItem("savedPokemon")) || [];
+  savedPokemon.push(favePokemon);
+  localStorage.setItem("savedPokemon", JSON.stringify(savedPokemon));
+  console.log("Inside Favorite Pokemon", favePokemon);
+  //showFavoritePokemon();
+}
 
 function addNewPokemon() {
   const newPokemonImage =
@@ -203,7 +210,7 @@ function pokemonCard(pokemonDetails) {
 
     const saveBtn = pokedexCard.querySelector(".save-btn");
     saveBtn.addEventListener("click", () => {
-      // Insert action later
+      favoritePokemon(pokeMonster.pokemonName);
       console.log("Save button has been clicked for ", pokeMonster.pokemonName);
     });
 
