@@ -93,24 +93,9 @@ filterBtn.forEach((button) => {
 });
 
 //Write
-
-function newPokemonCard(pokemonCard) {
-  pokemonContainer.innerHTML = "";
-  pokemonCard.forEach((pokeMonster) => {
-    const pokedexCard = document.createElement("div");
-    pokedexCard.className = "pokemon-card";
-    pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName} height="96" width="96">
-                              <p>Name : ${pokeMonster.pokemonName}</p>
-                               <p>Type : ${pokeMonster.pokemonTypes}</p>
-                               <button class="save-btn">Save</button>
-                               <button class="edit-btn">Edit</button>
-                               <button class="delete-btn">Delete</button>`;
-    pokedexCard.style["border-radius"] = "15px";
-    pokedexCard.style.border = "2px #000000";
-    pokedexCard.style.padding = "10px";
-
-    pokemonContainer.appendChild(pokedexCard);
-  });
+function fetchNewPokemonFromLocal() {
+  let pokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
+  pokemonCard(pokemonList);
 }
 
 function addNewPokemon() {
@@ -138,6 +123,7 @@ function addNewPokemon() {
 
   pokemonList.push(newPokemon);
   localStorage.setItem("pokemonList", JSON.stringify(pokemonList));
+  fetchNewPokemonFromLocal();
 }
 
 addBtn.addEventListener("click", function () {
@@ -184,7 +170,7 @@ function pokemonCard(pokemonDetails) {
 
     pokedexCard.style.background = bgColorCard;
     pokedexCard.className = "pokemon-card";
-    pokedexCard.innerHTML = ` <img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}">
+    pokedexCard.innerHTML = ` <img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}" height="96" width="96">
                               <p>Name : ${pokeMonster.pokemonName}</p>
                                <p>Type : ${pokeMonster.pokemonTypes}</p>
                                <button class="save-btn">Save</button>
