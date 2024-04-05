@@ -2,7 +2,8 @@ const mainContainer = document.querySelector(".main-container");
 const pokemonContainer = document.querySelector(".pokemon-container");
 const pokemonFavorite = document.querySelector(".pokemon-favorite");
 
-const filterbtn = document.querySelectorAll(".filter-btn");
+const addBtn = document.querySelector(".add-btn");
+const filterBtn = document.querySelectorAll(".filter-btn");
 
 mainContainer.style.display = "flex";
 mainContainer.style.height = "100%";
@@ -76,19 +77,52 @@ async function fetchFilterPokemon(type) {
         pokemon.pokemonTypes.includes(type)
       );
     }
-
+    console.log("Filtered Pokemon", filteredPokemon);
     pokemonCard(filteredPokemon);
   } catch (error) {
     console.error("Unable to load pokemon list!", error);
   }
 }
 
-filterbtn.forEach((button) => {
+filterBtn.forEach((button) => {
   button.addEventListener("click", () => {
     const chosenType = button.getAttribute("data-pokemonType");
-
+    console.log("pokemon type", chosenType);
     fetchFilterPokemon(chosenType);
   });
+});
+
+//Write
+
+function addNewPokemon() {
+  const newPokemonImage =
+    "https://pngfre.com/wp-content/uploads/Pokeball-1.png";
+  const newPokemonName = prompt("Enter new Pokemon name:");
+  const newPokemonType = prompt("Enter new Pokemon type:");
+
+  if (newPokemonName === null || newPokemonType === null) {
+    return null;
+  }
+
+  if (!newPokemonName.trim() || !newPokemonType.trim()) {
+    alert("Please enter Pokemon name and type!");
+    return addNewPokemon();
+  }
+
+  const newPokemon = {
+    pokemonName: newPokemonName.trim(),
+    pokemonImage: newPokemonImage,
+    pokemonTypes: newPokemonType.trim(),
+  };
+
+  let pokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
+
+  pokemonList.push(newPokemon);
+  localStorage.setItem("pokemonList", JSON.stringify(pokemonList));
+}
+
+addBtn.addEventListener("click", function () {
+  addNewPokemon();
 });
 
 // reference to pokemon colour types
