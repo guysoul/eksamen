@@ -47,6 +47,8 @@ async function fetchPokemonInformation(pokeURL) {
   };
 }
 
+//Uses the spread syntax method
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
 async function fetchAndShowPokemon() {
   try {
     let oldAndNewPokemon = [];
@@ -71,18 +73,32 @@ async function fetchAndShowPokemon() {
 
 async function fetchFilterPokemon(type) {
   try {
+    let newPokemonAddedToFilter = [];
+
     const pokemonFilteredList = await fetchPokemonList();
     const pokemonFilteredDetail = pokemonFilteredList.map((pokeMonster) =>
       fetchPokemonInformation(pokeMonster.url)
     );
 
     const pokemonFilteredDetails = await Promise.all(pokemonFilteredDetail);
+    newPokemonAddedToFilter = [
+      ...newPokemonAddedToFilter,
+      ...pokemonFilteredDetails,
+    ];
+
+    const pokemonFilteredStorageDetails =
+      JSON.parse(localStorage.getItem("pokemonList")) || [];
+    newPokemonAddedToFilter = [
+      ...newPokemonAddedToFilter,
+      ...pokemonFilteredStorageDetails,
+    ];
+
     let filteredPokemon;
 
     if (type === "all") {
-      filteredPokemon = pokemonFilteredDetails;
+      filteredPokemon = newPokemonAddedToFilter;
     } else {
-      filteredPokemon = pokemonFilteredDetails.filter((pokemon) =>
+      filteredPokemon = newPokemonAddedToFilter.filter((pokemon) =>
         pokemon.pokemonTypes.includes(type)
       );
     }
@@ -128,7 +144,7 @@ function addNewPokemon() {
 
   pokemonList.push(newPokemon);
   localStorage.setItem("pokemonList", JSON.stringify(pokemonList));
-  fetchNewPokemonFromLocal();
+  fetchAndShowPokemon();
 }
 
 addBtn.addEventListener("click", function () {
