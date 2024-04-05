@@ -77,8 +77,6 @@ async function fetchFilterPokemon(type) {
       );
     }
 
-    console.log("filtered POkemon", filteredPokemon);
-
     pokemonCard(filteredPokemon);
   } catch (error) {
     console.error("Unable to load pokemon list!", error);
@@ -88,7 +86,7 @@ async function fetchFilterPokemon(type) {
 filterbtn.forEach((button) => {
   button.addEventListener("click", () => {
     const chosenType = button.getAttribute("data-pokemonType");
-    console.log("Chosen Type", chosenType);
+
     fetchFilterPokemon(chosenType);
   });
 });
