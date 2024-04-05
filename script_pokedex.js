@@ -123,7 +123,7 @@ function favoritePokemon(favePokemon) {
   savedPokemon.push(favePokemon);
   localStorage.setItem("savedPokemon", JSON.stringify(savedPokemon));
   console.log("Inside Favorite Pokemon", favePokemon);
-  //showFavoritePokemon();
+  showFavoritePokemon(favePokemon);
 }
 
 function addNewPokemon() {
@@ -189,6 +189,35 @@ function pokemonTypeColor(color) {
   }
 }
 
+function showFavoritePokemon(favePokemon) {
+  pokemonFavorite.innerHTML = "";
+
+  favePokemon.forEach((pokeMonster) => {
+    const bgColorCard = pokemonTypeColor(pokeMonster.pokemonTypes);
+    const pokedexCard = document.createElement("div");
+
+    pokedexCard.style.background = bgColorCard;
+    pokedexCard.className = "pokemon-card";
+    pokedexCard.innerHTML = ` <img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}" height="96" width="96">
+                              <p>Name : ${pokeMonster.pokemonName}</p>
+                               <p>Type : ${pokeMonster.pokemonTypes}</p>
+                               <button class="delete-btn">Delete</button>`;
+    pokedexCard.style["border-radius"] = "15px";
+    pokedexCard.style.border = "2px #000000";
+    pokedexCard.style.padding = "10px";
+
+    const deleteBtn = pokedexCard.querySelector(".delete-btn");
+    deleteBtn.addEventListener("click", () => {
+      // Insert action later
+      console.log(
+        "Delete button has been clicked for ",
+        pokeMonster.pokemonName
+      );
+    });
+    pokemonFavorite.appendChild(pokedexCard);
+  });
+}
+
 function pokemonCard(pokemonDetails) {
   pokemonContainer.innerHTML = "";
 
@@ -210,7 +239,12 @@ function pokemonCard(pokemonDetails) {
 
     const saveBtn = pokedexCard.querySelector(".save-btn");
     saveBtn.addEventListener("click", () => {
-      favoritePokemon(pokeMonster.pokemonName);
+      const savedPokemon = {
+        pokemonName: pokeMonster.pokemonName,
+        pokemonImage: pokeMonster.pokemonImage,
+        pokemonTypes: pokeMonster.pokemonTypes,
+      };
+      favoritePokemon(savedPokemon);
       console.log("Save button has been clicked for ", pokeMonster.pokemonName);
     });
 
