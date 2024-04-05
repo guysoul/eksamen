@@ -94,6 +94,25 @@ filterBtn.forEach((button) => {
 
 //Write
 
+function newPokemonCard(pokemonCard) {
+  pokemonContainer.innerHTML = "";
+  pokemonCard.forEach((pokeMonster) => {
+    const pokedexCard = document.createElement("div");
+    pokedexCard.className = "pokemon-card";
+    pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName} height="96" width="96">
+                              <p>Name : ${pokeMonster.pokemonName}</p>
+                               <p>Type : ${pokeMonster.pokemonTypes}</p>
+                               <button class="save-btn">Save</button>
+                               <button class="edit-btn">Edit</button>
+                               <button class="delete-btn">Delete</button>`;
+    pokedexCard.style["border-radius"] = "15px";
+    pokedexCard.style.border = "2px #000000";
+    pokedexCard.style.padding = "10px";
+
+    pokemonContainer.appendChild(pokedexCard);
+  });
+}
+
 function addNewPokemon() {
   const newPokemonImage =
     "https://pngfre.com/wp-content/uploads/Pokeball-1.png";
