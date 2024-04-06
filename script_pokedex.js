@@ -134,7 +134,10 @@ function favoritePokemon(favePokemon) {
   }
 }
 
-function deleteApiPokemon() {}
+//Delete
+function deleteStoragePokemon(pokemonDetails) {
+  console.log("Inside deletAPIpokemon.", pokemonDetails);
+}
 
 function addNewPokemon() {
   const newPokemonImage =
@@ -268,7 +271,13 @@ function pokemonCard(pokemonDetails) {
 
     const deleteBtn = pokedexCard.querySelector(".delete-btn");
     deleteBtn.addEventListener("click", () => {
-      // Insert action later
+      const deletedPokemon = {
+        pokemonName: pokeMonster.pokemonName,
+        pokemonImage: pokeMonster.pokemonImage,
+        pokemonTypes: pokeMonster.pokemonTypes,
+      };
+      //deleteApiPokemon(deletedPokemon);
+      pokemonContainer.removeChild(pokedexCard);
       console.log(
         "Delete button has been clicked for ",
         pokeMonster.pokemonName
