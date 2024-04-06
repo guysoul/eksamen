@@ -214,7 +214,7 @@ function showFavoritePokemon() {
                                <p>Type : ${pokeMonster.pokemonTypes}</p>
                                <button class="delete-btn">Delete</button>`;
     pokedexCard.style["border-radius"] = "15px";
-    pokedexCard.style.border = "2px #000000";
+    pokedexCard.style.border = "2px";
     pokedexCard.style.padding = "10px";
 
     const deleteBtn = pokedexCard.querySelector(".delete-btn");
@@ -245,7 +245,7 @@ function pokemonCard(pokemonDetails) {
                                <button class="edit-btn">Edit</button>
                                <button class="delete-btn">Delete</button>`;
     pokedexCard.style["border-radius"] = "15px";
-    pokedexCard.style.border = "2px #000000";
+    pokedexCard.style.border = "2px";
     pokedexCard.style.padding = "10px";
 
     const saveBtn = pokedexCard.querySelector(".save-btn");
