@@ -136,7 +136,21 @@ function favoritePokemon(favePokemon) {
 
 //Delete
 function deleteStoragePokemon(pokemonDetails) {
-  console.log("Inside deletAPIpokemon.", pokemonDetails);
+  console.log("Inside deletstoragepokemon.", pokemonDetails);
+  let deletedPokemonList =
+    JSON.parse(localStorage.getItem("pokemonList")) || [];
+
+  //Need to find the index in deletedpokemonList to be deleted.
+  const pokemonToBeDeleted = deletedPokemonList.findIndex(
+    (pokemon) => pokemon.pokemonName === pokemonDetails.pokemonName
+  );
+
+  if (pokemonToBeDeleted !== -1) {
+    console.log("Deleted Pokemon", pokemonToBeDeleted);
+    deletedPokemonList.splice(pokemonToBeDeleted, 1);
+
+    localStorage.setItem("pokemonList", JSON.stringify(deletedPokemonList));
+  }
 }
 
 function addNewPokemon() {
@@ -276,7 +290,7 @@ function pokemonCard(pokemonDetails) {
         pokemonImage: pokeMonster.pokemonImage,
         pokemonTypes: pokeMonster.pokemonTypes,
       };
-      //deleteApiPokemon(deletedPokemon);
+      deleteStoragePokemon(deletedPokemon);
       pokemonContainer.removeChild(pokedexCard);
       console.log(
         "Delete button has been clicked for ",
