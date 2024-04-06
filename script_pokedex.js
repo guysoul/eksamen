@@ -140,16 +140,28 @@ function deleteStoragePokemon(pokemonDetails) {
   let deletedPokemonList =
     JSON.parse(localStorage.getItem("pokemonList")) || [];
 
+  let deletedFavoritePokemon =
+    JSON.parse(localStorage.getItem("savedPokemon")) || [];
+
   //Need to find the index in deletedpokemonList to be deleted.
   const pokemonToBeDeleted = deletedPokemonList.findIndex(
     (pokemon) => pokemon.pokemonName === pokemonDetails.pokemonName
   );
 
-  if (pokemonToBeDeleted !== -1) {
+  const favoritePokemonToBeDeleted = deletedFavoritePokemon.findIndex(
+    (favePokemon) => favePokemon.pokemonName === pokemonDetails.pokemonName
+  );
+
+  if (pokemonToBeDeleted !== -1 || favoritePokemonToBeDeleted !== -1) {
     console.log("Deleted Pokemon", pokemonToBeDeleted);
     deletedPokemonList.splice(pokemonToBeDeleted, 1);
+    deletedFavoritePokemon.splice(favoritePokemonToBeDeleted, 1);
 
     localStorage.setItem("pokemonList", JSON.stringify(deletedPokemonList));
+    localStorage.setItem(
+      "savedPokemon",
+      JSON.stringify(deletedFavoritePokemon)
+    );
   }
 }
 
@@ -238,7 +250,15 @@ function showFavoritePokemon() {
 
     const deleteBtn = pokedexCard.querySelector(".delete-btn");
     deleteBtn.addEventListener("click", () => {
-      // Insert action later
+      const deleteFavoritePokemon = {
+        pokemonName: pokeMonster.pokemonName,
+        pokemonImage: pokeMonster.pokemonImage,
+        pokemonTypes: pokeMonster.pokemonTypes,
+      };
+
+      pokemonFavorite.removeChild(pokedexCard);
+      deleteStoragePokemon(deleteFavoritePokemon);
+
       console.log(
         "Delete button has been clicked for ",
         pokeMonster.pokemonName
@@ -290,8 +310,8 @@ function pokemonCard(pokemonDetails) {
         pokemonImage: pokeMonster.pokemonImage,
         pokemonTypes: pokeMonster.pokemonTypes,
       };
-      deleteStoragePokemon(deletedPokemon);
       pokemonContainer.removeChild(pokedexCard);
+      deleteStoragePokemon(deletedPokemon);
       console.log(
         "Delete button has been clicked for ",
         pokeMonster.pokemonName
