@@ -134,6 +134,8 @@ function favoritePokemon(favePokemon) {
   }
 }
 
+function deleteApiPokemon() {}
+
 function addNewPokemon() {
   const newPokemonImage =
     "https://pngfre.com/wp-content/uploads/Pokeball-1.png";
