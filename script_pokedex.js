@@ -121,10 +121,17 @@ filterBtn.forEach((button) => {
 //Write
 function favoritePokemon(favePokemon) {
   let savedPokemon = JSON.parse(localStorage.getItem("savedPokemon")) || [];
-  savedPokemon.push(favePokemon);
-  localStorage.setItem("savedPokemon", JSON.stringify(savedPokemon));
-  console.log("Inside Favorite Pokemon", favePokemon);
-  showFavoritePokemon();
+
+  if (savedPokemon.length < 5) {
+    savedPokemon.push(favePokemon);
+    localStorage.setItem("savedPokemon", JSON.stringify(savedPokemon));
+    console.log("Inside Favorite Pokemon", favePokemon);
+    showFavoritePokemon();
+  } else {
+    alert(
+      "You have reached the maximum numbers of saved Pokemons. Please delete pokemons!"
+    );
+  }
 }
 
 function addNewPokemon() {
@@ -197,6 +204,7 @@ function showFavoritePokemon() {
 
   favePokemon.forEach((pokeMonster) => {
     const bgColorCard = pokemonTypeColor(pokeMonster.pokemonTypes);
+
     const pokedexCard = document.createElement("div");
 
     pokedexCard.style.background = bgColorCard;
