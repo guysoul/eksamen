@@ -123,7 +123,7 @@ function favoritePokemon(favePokemon) {
   savedPokemon.push(favePokemon);
   localStorage.setItem("savedPokemon", JSON.stringify(savedPokemon));
   console.log("Inside Favorite Pokemon", favePokemon);
-  showFavoritePokemon(favePokemon);
+  showFavoritePokemon();
 }
 
 function addNewPokemon() {
@@ -189,8 +189,10 @@ function pokemonTypeColor(color) {
   }
 }
 
-function showFavoritePokemon(favePokemon) {
+function showFavoritePokemon() {
   pokemonFavorite.innerHTML = "";
+
+  const favePokemon = JSON.parse(localStorage.getItem("savedPokemon")) || [];
 
   favePokemon.forEach((pokeMonster) => {
     const bgColorCard = pokemonTypeColor(pokeMonster.pokemonTypes);
@@ -244,8 +246,9 @@ function pokemonCard(pokemonDetails) {
         pokemonImage: pokeMonster.pokemonImage,
         pokemonTypes: pokeMonster.pokemonTypes,
       };
-      favoritePokemon(savedPokemon);
       console.log("Save button has been clicked for ", pokeMonster.pokemonName);
+      console.log("The value is", savedPokemon);
+      favoritePokemon(savedPokemon);
     });
 
     const editBtn = pokedexCard.querySelector(".edit-btn");
