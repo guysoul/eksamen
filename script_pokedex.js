@@ -255,8 +255,6 @@ function pokemonCard(pokemonDetails) {
         pokemonImage: pokeMonster.pokemonImage,
         pokemonTypes: pokeMonster.pokemonTypes,
       };
-      console.log("Save button has been clicked for ", pokeMonster.pokemonName);
-      console.log("The value is", savedPokemon);
       favoritePokemon(savedPokemon);
     });
 
