@@ -165,11 +165,37 @@ function deleteStoragePokemon(pokemonDetails) {
   }
 }
 
+function editPokemonDetails(editedPokemon) {
+  console.log(editedPokemon.pokemonName);
+  console.log(editedPokemon.pokemonTypes);
+
+  const editedPokemonName = prompt("Enter new Pokemon Name:");
+  const editedPokemonType = prompt("Enter new Pokemon Type:");
+
+  if (editedPokemonName === null || editedPokemonType === null) {
+    return null;
+  }
+
+  if (!editedPokemonName.trim() || !editedPokemonType.trim()) {
+    alert("Please enter the new Pokemon name and type!");
+    return editPokemonDetails(editedPokemon);
+  }
+
+  editedPokemon.pokemonName = editedPokemonName.trim();
+  editedPokemon.pokemonTypes = editedPokemonType.trim();
+
+  console.log(editedPokemonName);
+  console.log(editedPokemonType);
+
+  fetchAndShowPokemon();
+  //pokemonCard(updatedPokemonDetails);
+}
+
 function addNewPokemon() {
   const newPokemonImage =
     "https://pngfre.com/wp-content/uploads/Pokeball-1.png";
-  const newPokemonName = prompt("Enter new Pokemon name:");
-  const newPokemonType = prompt("Enter new Pokemon type:");
+  const newPokemonName = prompt("Enter new Pokemon Name:");
+  const newPokemonType = prompt("Enter new Pokemon Type:");
 
   if (newPokemonName === null || newPokemonType === null) {
     return null;
@@ -299,7 +325,13 @@ function pokemonCard(pokemonDetails) {
 
     const editBtn = pokedexCard.querySelector(".edit-btn");
     editBtn.addEventListener("click", () => {
-      // Insert action later
+      const editedPokemon = {
+        pokemonName: pokeMonster.pokemonName,
+        pokemonImage: pokeMonster.pokemonImage,
+        pokemonTypes: pokeMonster.pokemonTypes,
+      };
+
+      editPokemonDetails(editedPokemon);
       console.log("Edit button has been clicked for ", pokeMonster.pokemonName);
     });
 
