@@ -66,6 +66,7 @@ async function fetchAndShowPokemon() {
     oldAndNewPokemon = [...oldAndNewPokemon, ...pokemonStorageDetails];
 
     pokemonCard(oldAndNewPokemon);
+    showFavoritePokemon();
   } catch (error) {
     console.error("Unable to load pokemon list!", error);
   }
