@@ -171,7 +171,7 @@ function deleteStoragePokemon(pokemonDetails) {
   }
 }
 
-function editPokemonDetails(editedPokemon) {
+async function editPokemonDetails(editedPokemon) {
   console.log(editedPokemon.pokemonName);
   console.log(editedPokemon.pokemonTypes);
   console.log(editedPokemon.pokemonNumber);
@@ -191,12 +191,12 @@ function editPokemonDetails(editedPokemon) {
   editedPokemon.pokemonName = editedPokemonName.trim();
   editedPokemon.pokemonTypes = editedPokemonType.trim();
 
+  // Updating pokemon details in the local storage
   let editedPokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
-
   console.log("existing pokemon list", editedPokemonList);
-
   const pokemonToBeEdited = editedPokemonList.findIndex(
-    (editPokemon) => editPokemon.pokemonNumber === editedPokemon.pokemonNumber
+    (editLocalPokemon) =>
+      editLocalPokemon.pokemonNumber === editedPokemon.pokemonNumber
   );
 
   console.log("index of pokemon to be updated", pokemonToBeEdited);
@@ -211,6 +211,24 @@ function editPokemonDetails(editedPokemon) {
     console.log("Pokemon details updated");
   } else {
     console.error("not updated");
+  }
+
+  //Updating pokemon details in the API list
+  try {
+    const apiPokemonList = await fetchPokemonList();
+    const apiEditedPokemon = apiPokemonList.find(
+      (editApiPokemon) =>
+        editApiPokemon.pokemonNumber === editedPokemon.pokemonNumber
+    );
+
+    console.log("api pokemon to be edited", editedPokemon.pokemonNumber);
+
+    if (apiEditedPokemon) {
+      apiEditedPokemon.pokemonName = editedPokemon.pokemonName;
+      apiEditedPokemon.pokemonTypes = editedPokemon.pokemonTypes;
+    }
+  } catch (error) {
+    console.error("Error updated the pokemon details in API", error);
   }
 
   console.log("New name value is", editedPokemonName);
