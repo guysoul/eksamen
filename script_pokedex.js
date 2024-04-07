@@ -188,17 +188,6 @@ function editPokemonDetails(editedPokemon) {
     return editPokemonDetails(editedPokemon);
   }
 
-  /* try {
-    editCard[index] = editedPokemon;
-    const editedPokemonList =
-      JSON.parse(localStorage.getItem("pokemonList")) || [];
-    editedPokemonList[index] = editedPokemon;
-
-    localStorage.setItem("pokemonList", JSON.stringify(editedPokemonList));
-  } catch (error) {
-    console.error("error in updating details", error);
-  }*/
-
   editedPokemon.pokemonName = editedPokemonName.trim();
   editedPokemon.pokemonTypes = editedPokemonType.trim();
 
@@ -227,13 +216,13 @@ function editPokemonDetails(editedPokemon) {
   console.log("New name value is", editedPokemonName);
   console.log("New type value is", editedPokemonType);
   fetchAndShowPokemon();
-  //pokemonCard(updatedPokemonDetails);*/
 }
 
 function addNewPokemon() {
   const newPokemonImage =
     "https://pngfre.com/wp-content/uploads/Pokeball-1.png";
-  const newPokemonNumber = "1985";
+  let pokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
+  let newPokemonNumber = 0;
   const newPokemonName = prompt("Enter new Pokemon Name:");
   const newPokemonType = prompt("Enter new Pokemon Type:");
 
@@ -250,13 +239,16 @@ function addNewPokemon() {
     pokemonName: newPokemonName.trim(),
     pokemonImage: newPokemonImage,
     pokemonTypes: newPokemonType.trim(),
-    pokemonNumber: newPokemonNumber,
+    pokemonNumber: newPokemonNumber++,
   };
 
-  let pokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
+  pokemonList.forEach((pokemon, index) => {
+    pokemon.pokemonNumber = index + 1;
+  });
 
   pokemonList.push(newPokemon);
   localStorage.setItem("pokemonList", JSON.stringify(pokemonList));
+
   fetchAndShowPokemon();
 }
 
