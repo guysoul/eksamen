@@ -152,6 +152,10 @@ function deleteStoragePokemon(pokemonDetails) {
     (favePokemon) => favePokemon.pokemonName === pokemonDetails.pokemonName
   );
 
+  console.log("pokemon to be deleted", pokemonToBeDeleted);
+
+  console.log("pokemon to be deleted in favorite", favoritePokemonToBeDeleted);
+
   if (pokemonToBeDeleted !== -1 || favoritePokemonToBeDeleted !== -1) {
     console.log("Deleted Pokemon", pokemonToBeDeleted);
     deletedPokemonList.splice(pokemonToBeDeleted, 1);
@@ -181,12 +185,43 @@ function editPokemonDetails(editedPokemon) {
     return editPokemonDetails(editedPokemon);
   }
 
+  /*try {
+    editCard[index] = editedPokemon;
+    
+    editedPokemonList[index] = editedPokemon;
+    localStorage.setItem("pokemonList", JSON.stringify(editedPokemonList));
+    
+  } catch (error) {
+    console.error("error in updating details", error);
+  }*/
+
   editedPokemon.pokemonName = editedPokemonName.trim();
   editedPokemon.pokemonTypes = editedPokemonType.trim();
 
-  console.log(editedPokemonName);
-  console.log(editedPokemonType);
+  let editedPokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
 
+  console.log("existing pokemon list", editedPokemonList);
+
+  const pokemonToBeEdited = editedPokemonList.findIndex(
+    (editPokemon) => editPokemon.pokemonID === editedPokemon.pokemonID
+  );
+
+  console.log("index of pokemon to be updated", pokemonToBeEdited);
+
+  if (pokemonToBeEdited !== -1) {
+    editedPokemonList[pokemonToBeEdited].pokemonName =
+      editedPokemon.pokemonName;
+    editedPokemonList[pokemonToBeEdited].pokemonTypes =
+      editedPokemon.pokemonTypes;
+
+    localStorage.setItem("pokemonList", JSON.stringify(editedPokemonList));
+    console.log("Pokemon details updated");
+  } else {
+    console.error("not updated");
+  }
+
+  console.log("New name value is", editedPokemonName);
+  console.log("New type value is", editedPokemonType);
   fetchAndShowPokemon();
   //pokemonCard(updatedPokemonDetails);
 }
@@ -194,6 +229,7 @@ function editPokemonDetails(editedPokemon) {
 function addNewPokemon() {
   const newPokemonImage =
     "https://pngfre.com/wp-content/uploads/Pokeball-1.png";
+  const newPokemonID = "savedPokemon";
   const newPokemonName = prompt("Enter new Pokemon Name:");
   const newPokemonType = prompt("Enter new Pokemon Type:");
 
@@ -210,6 +246,7 @@ function addNewPokemon() {
     pokemonName: newPokemonName.trim(),
     pokemonImage: newPokemonImage,
     pokemonTypes: newPokemonType.trim(),
+    pokemonID: newPokemonID,
   };
 
   let pokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
@@ -266,6 +303,7 @@ function showFavoritePokemon() {
 
     pokedexCard.style.background = bgColorCard;
     pokedexCard.className = "pokemon-card";
+
     pokedexCard.innerHTML = ` <img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}" height="96" width="96">
                               <p>Name : ${pokeMonster.pokemonName}</p>
                                <p>Type : ${pokeMonster.pokemonTypes}</p>
