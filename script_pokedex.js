@@ -144,26 +144,25 @@ function deleteStoragePokemon(pokemonDetails) {
 
   let deletedFavoritePokemon =
     JSON.parse(localStorage.getItem("savedPokemon")) || [];
-
   //Need to find the index in deletedpokemonList to be deleted.
   const pokemonToBeDeleted = deletedPokemonList.findIndex(
-    (pokemon) => pokemon.pokemonName === pokemonDetails.pokemonName
+    (pokemon) => pokemon.pokemonNumber === pokemonDetails.pokemonNumber
   );
 
   const favoritePokemonToBeDeleted = deletedFavoritePokemon.findIndex(
-    (favePokemon) => favePokemon.pokemonName === pokemonDetails.pokemonName
+    (favePokemon) => favePokemon.pokemonNumber === pokemonDetails.pokemonNumber
   );
 
   console.log("pokemon to be deleted", pokemonToBeDeleted);
 
   console.log("pokemon to be deleted in favorite", favoritePokemonToBeDeleted);
 
-  if (pokemonToBeDeleted !== -1 || favoritePokemonToBeDeleted !== -1) {
+  if (pokemonToBeDeleted !== -1) {
     console.log("Deleted Pokemon", pokemonToBeDeleted);
     deletedPokemonList.splice(pokemonToBeDeleted, 1);
-    deletedFavoritePokemon.splice(favoritePokemonToBeDeleted, 1);
-
     localStorage.setItem("pokemonList", JSON.stringify(deletedPokemonList));
+  } else if (favoritePokemonToBeDeleted !== -1) {
+    deletedFavoritePokemon.splice(favoritePokemonToBeDeleted, 1);
     localStorage.setItem(
       "savedPokemon",
       JSON.stringify(deletedFavoritePokemon)
@@ -337,11 +336,6 @@ function showFavoritePokemon() {
 
       pokemonFavorite.removeChild(pokedexCard);
       deleteStoragePokemon(deleteFavoritePokemon);
-
-      console.log(
-        "Delete button has been clicked for ",
-        pokeMonster.pokemonName
-      );
     });
     pokemonFavorite.appendChild(pokedexCard);
   });
@@ -385,9 +379,7 @@ function pokemonCard(pokemonDetails) {
         pokemonTypes: pokeMonster.pokemonTypes,
         pokemonNumber: pokeMonster.pokemonNumber,
       };
-
       editPokemonDetails(editedPokemon);
-      console.log("Edit button has been clicked for ", pokeMonster.pokemonName);
     });
 
     const deleteBtn = pokedexCard.querySelector(".delete-btn");
@@ -400,10 +392,6 @@ function pokemonCard(pokemonDetails) {
       };
       pokemonContainer.removeChild(pokedexCard);
       deleteStoragePokemon(deletedPokemon);
-      console.log(
-        "Delete button has been clicked for ",
-        pokeMonster.pokemonName
-      );
     });
 
     pokemonContainer.appendChild(pokedexCard);
