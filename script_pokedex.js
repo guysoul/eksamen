@@ -37,6 +37,7 @@ async function fetchPokemonList() {
 
 //Fetch all secondary details of a pokemon
 async function fetchPokemonInformation(pokeURL) {
+  const pokemonNumber = pokeURL.match(/\/(\d+)\/$/)[1];
   const fetchPokemonResponse = await fetch(pokeURL);
   const pokemonData = await fetchPokemonResponse.json();
 
@@ -44,6 +45,7 @@ async function fetchPokemonInformation(pokeURL) {
     pokemonName: pokemonData.name,
     pokemonImage: pokemonData.sprites.front_default,
     pokemonTypes: pokemonData.types[0].type.name,
+    pokemonNumber: pokemonNumber,
   };
 }
 
@@ -172,6 +174,7 @@ function deleteStoragePokemon(pokemonDetails) {
 function editPokemonDetails(editedPokemon) {
   console.log(editedPokemon.pokemonName);
   console.log(editedPokemon.pokemonTypes);
+  console.log(editedPokemon.pokemonNumber);
 
   const editedPokemonName = prompt("Enter new Pokemon Name:");
   const editedPokemonType = prompt("Enter new Pokemon Type:");
@@ -185,12 +188,13 @@ function editPokemonDetails(editedPokemon) {
     return editPokemonDetails(editedPokemon);
   }
 
-  /*try {
+  /* try {
     editCard[index] = editedPokemon;
-    
+    const editedPokemonList =
+      JSON.parse(localStorage.getItem("pokemonList")) || [];
     editedPokemonList[index] = editedPokemon;
+
     localStorage.setItem("pokemonList", JSON.stringify(editedPokemonList));
-    
   } catch (error) {
     console.error("error in updating details", error);
   }*/
@@ -203,7 +207,7 @@ function editPokemonDetails(editedPokemon) {
   console.log("existing pokemon list", editedPokemonList);
 
   const pokemonToBeEdited = editedPokemonList.findIndex(
-    (editPokemon) => editPokemon.pokemonID === editedPokemon.pokemonID
+    (editPokemon) => editPokemon.pokemonNumber === editedPokemon.pokemonNumber
   );
 
   console.log("index of pokemon to be updated", pokemonToBeEdited);
@@ -223,13 +227,13 @@ function editPokemonDetails(editedPokemon) {
   console.log("New name value is", editedPokemonName);
   console.log("New type value is", editedPokemonType);
   fetchAndShowPokemon();
-  //pokemonCard(updatedPokemonDetails);
+  //pokemonCard(updatedPokemonDetails);*/
 }
 
 function addNewPokemon() {
   const newPokemonImage =
     "https://pngfre.com/wp-content/uploads/Pokeball-1.png";
-  const newPokemonID = "savedPokemon";
+  const newPokemonNumber = "1985";
   const newPokemonName = prompt("Enter new Pokemon Name:");
   const newPokemonType = prompt("Enter new Pokemon Type:");
 
@@ -246,7 +250,7 @@ function addNewPokemon() {
     pokemonName: newPokemonName.trim(),
     pokemonImage: newPokemonImage,
     pokemonTypes: newPokemonType.trim(),
-    pokemonID: newPokemonID,
+    pokemonNumber: newPokemonNumber,
   };
 
   let pokemonList = JSON.parse(localStorage.getItem("pokemonList")) || [];
@@ -318,6 +322,7 @@ function showFavoritePokemon() {
         pokemonName: pokeMonster.pokemonName,
         pokemonImage: pokeMonster.pokemonImage,
         pokemonTypes: pokeMonster.pokemonTypes,
+        pokemonNumber: pokeMonster.pokemonNumber,
       };
 
       pokemonFavorite.removeChild(pokedexCard);
@@ -357,6 +362,7 @@ function pokemonCard(pokemonDetails) {
         pokemonName: pokeMonster.pokemonName,
         pokemonImage: pokeMonster.pokemonImage,
         pokemonTypes: pokeMonster.pokemonTypes,
+        pokemonNumber: pokeMonster.pokemonNumber,
       };
       favoritePokemon(savedPokemon);
     });
@@ -367,6 +373,7 @@ function pokemonCard(pokemonDetails) {
         pokemonName: pokeMonster.pokemonName,
         pokemonImage: pokeMonster.pokemonImage,
         pokemonTypes: pokeMonster.pokemonTypes,
+        pokemonNumber: pokeMonster.pokemonNumber,
       };
 
       editPokemonDetails(editedPokemon);
@@ -379,6 +386,7 @@ function pokemonCard(pokemonDetails) {
         pokemonName: pokeMonster.pokemonName,
         pokemonImage: pokeMonster.pokemonImage,
         pokemonTypes: pokeMonster.pokemonTypes,
+        pokemonNumber: pokeMonster.pokemonNumber,
       };
       pokemonContainer.removeChild(pokedexCard);
       deleteStoragePokemon(deletedPokemon);
