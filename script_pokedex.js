@@ -50,6 +50,7 @@ async function fetchPokemonInformation(pokeURL) {
 }
 
 //Uses the spread syntax method
+//https://www.w3schools.com/jsref/jsref_map.asp
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
 async function fetchAndShowPokemon() {
   try {
