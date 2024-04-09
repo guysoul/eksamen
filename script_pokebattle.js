@@ -90,10 +90,11 @@ async function fetchAndShowPokemon() {
       fetchPokemonInformation(pokeMonster.url)
     );
 
-    const pokemonDetails = await Promise.all(pokemonDetail);
-    apiAndStoragePokemon = [...apiAndStoragePokemon, ...pokemonDetails];
+    const pokemonListDetails = await Promise.all(pokemonDetail);
+    apiAndStoragePokemon = [...apiAndStoragePokemon, ...pokemonListDetails];
 
     pokemonCard(apiAndStoragePokemon);
+    showTeamPokemon();
   } catch (error) {
     console.error("Unable to load pokemon list!", error);
   }
