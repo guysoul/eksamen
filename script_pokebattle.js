@@ -23,7 +23,11 @@ battleGround.style["row-gap"] = "10px";
 battleGround.style["gap"] = "10px 20px";
 battleGround.style.height = "100%";
 battleGround.style.width = "67%";
-battleGround.style["background-color"] = "lightgreen";
+battleGround.style["background-image"] =
+  "url('https://cdna.artstation.com/p/assets/images/images/052/645/660/large/chrysope-battle-background-new.jpg')";
+battleGround.style["background-size"] = "cover";
+battleGround.style["background-position"] = "center";
+battleGround.style["min-height"] = "640px";
 
 //Read
 async function fetchPokemonList() {
@@ -31,7 +35,7 @@ async function fetchPokemonList() {
     "https://pokeapi.co/api/v2/pokemon?limit=10"
   );
   let myTeamResult = await myTeamRequest.json();
-  return pokemonResult.results;
+  return myTeamResult.results;
 }
 
 async function fetchPokemonInformation(pokeURL) {
@@ -42,9 +46,9 @@ async function fetchPokemonInformation(pokeURL) {
 
   pokemonData.stats.forEach((pokeStats) => {
     if (pokeStats.stat.name === "hp") {
-      pokemonHP = stat.base_stat;
+      pokemonHP = pokeStats.base_stat;
     } else if (pokeStats.stat.name === "attack") {
-      pokemonAttack = stat.base_stat;
+      pokemonAttack = pokeStats.base_stat;
     }
   });
 
@@ -57,3 +61,57 @@ async function fetchPokemonInformation(pokeURL) {
     pokemonAttack: pokemonAttack,
   };
 }
+
+async function fetchAndShowPokemon() {
+  try {
+    let apiAndStoragePokemon = [];
+
+    const pokemonList = await fetchPokemonList();
+    const pokemonDetail = pokemonList.map((pokeMonster) =>
+      fetchPokemonInformation(pokeMonster.url)
+    );
+
+    const pokemonDetails = await Promise.all(pokemonDetail);
+    apiAndStoragePokemon = [...apiAndStoragePokemon, ...pokemonDetails];
+
+    pokemonCard(apiAndStoragePokemon);
+  } catch (error) {
+    console.error("Unable to load pokemon list!", error);
+  }
+}
+
+function pokemonCard(pokemonDetails) {
+  pokemonList.innerHTML = "";
+
+  pokemonDetails.forEach((pokeMonster) => {
+    const pokedexCard = document.createElement("div");
+
+    pokedexCard.style.background = "#71C558";
+    pokedexCard.className = "pokemon-card";
+    pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}" height="96" width="96">
+                              <p>Name : ${pokeMonster.pokemonName}<br/>
+                                 Type : ${pokeMonster.pokemonTypes}<br/>
+                                 HP: ${pokeMonster.pokemonHP}<br/>
+                                 Attack : ${pokeMonster.pokemonAttack}<br/>
+                              </p>
+                              <button class="add-btn">Add Pokemon</button>`;
+    pokedexCard.style["border-radius"] = "15px";
+    pokedexCard.style.border = "2px";
+    pokedexCard.style.padding = "10px";
+
+    const addBtn = pokedexCard.querySelector(".add-btn");
+    addBtn.addEventListener("click", () => {
+      const addedPokemon = {
+        pokemonName: pokeMonster.pokemonName,
+        pokemonImage: pokeMonster.pokemonImage,
+        pokemonTypes: pokeMonster.pokemonTypes,
+        pokemonNumber: pokeMonster.pokemonNumber,
+        pokemonHP: pokemonHP,
+        pokemonAttack: pokemonAttack,
+      };
+    });
+    pokemonList.appendChild(pokedexCard);
+  });
+}
+
+fetchAndShowPokemon();
