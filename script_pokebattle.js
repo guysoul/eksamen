@@ -23,7 +23,11 @@ battleGround.style["row-gap"] = "10px";
 battleGround.style["gap"] = "10px 20px";
 battleGround.style.height = "100%";
 battleGround.style.width = "67%";
-battleGround.style["background-color"] = "lightgreen";
+battleGround.style["background-image"] =
+  "url('https://cdna.artstation.com/p/assets/images/images/052/645/660/large/chrysope-battle-background-new.jpg')";
+battleGround.style["background-size"] = "cover";
+battleGround.style["background-position"] = "center";
+battleGround.style["min-height"] = "640px";
 
 //Read
 async function fetchPokemonList() {
