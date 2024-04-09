@@ -2,6 +2,13 @@ const mainContainer = document.querySelector(".main-container");
 const pokemonList = document.querySelector(".pokemon-list");
 const battleGround = document.querySelector(".battle-ground");
 
+const pokemonHealthContainer = document.querySelector(
+  ".pokemon-health-containers"
+);
+const healthbarContainers = document.querySelector(".healthbar-containers");
+const healthMemberOne = document.querySelector(".healthbar-member-one");
+const textContainer = document.querySelector(".text-container");
+
 mainContainer.style.display = "flex";
 mainContainer.style["justify-content"] = "space-between";
 mainContainer.style.height = "100%";
@@ -16,11 +23,6 @@ pokemonList.style.height = "100%";
 pokemonList.style.width = "30%";
 pokemonList.style["background-color"] = "lightblue";
 
-battleGround.style.display = "flex";
-battleGround.style["align-content"] = "flex-start";
-battleGround.style["flex-wrap"] = "wrap";
-battleGround.style["row-gap"] = "10px";
-battleGround.style["gap"] = "10px 20px";
 battleGround.style.height = "100%";
 battleGround.style.width = "67%";
 battleGround.style["background-image"] =
@@ -29,6 +31,22 @@ battleGround.style["background-size"] = "cover";
 battleGround.style["background-position"] = "center";
 battleGround.style["min-height"] = "640px";
 battleGround.style.overflow = "hidden";
+
+pokemonHealthContainer.style.position = "relative";
+pokemonHealthContainer.style.left = "1%";
+
+healthbarContainers.style["margin-top"] = "10px";
+healthbarContainers.style.width = "300px";
+healthbarContainers.style.height = "50px";
+
+healthMemberOne.style.position = "absolute";
+healthMemberOne.style.height = "75px";
+healthMemberOne.style["background-color"] = "#539AE2";
+healthMemberOne.style.width = "175px";
+healthMemberOne.style["border-radius"] = "15px";
+
+textContainer.style.position = "relative";
+textContainer.style["z-index"] = "2";
 
 //Read
 async function fetchPokemonList() {
@@ -97,7 +115,22 @@ function myTeamPokemon(addedPokemon) {
   }
 }
 
-function showTeamPokemon() {}
+function showTeamPokemon() {
+  battleGround.innerHTML = "";
+
+  const teamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
+
+  teamPokemon.forEach((pokeMonster) => {
+    const pokedexCard = document.createElement("div");
+    pokedexCard.className = "pokeimg-container-one";
+    pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}" height="96" width="96">`;
+    pokedexCard.style.position = "absolute";
+    pokedexCard.style.bottom = "5%";
+    pokedexCard.style.left = "3%";
+
+    battleGround.appendChild(pokedexCard);
+  });
+}
 
 function pokemonCard(pokemonDetails) {
   pokemonList.innerHTML = "";
@@ -125,8 +158,8 @@ function pokemonCard(pokemonDetails) {
         pokemonImage: pokeMonster.pokemonImage,
         pokemonTypes: pokeMonster.pokemonTypes,
         pokemonNumber: pokeMonster.pokemonNumber,
-        pokemonHP: pokemonHP,
-        pokemonAttack: pokemonAttack,
+        pokemonHP: pokeMonster.pokemonHP,
+        pokemonAttack: pokeMonster.pokemonAttack,
       };
       myTeamPokemon(addedPokemon);
     });
