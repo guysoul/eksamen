@@ -28,6 +28,7 @@ battleGround.style["background-image"] =
 battleGround.style["background-size"] = "cover";
 battleGround.style["background-position"] = "center";
 battleGround.style["min-height"] = "640px";
+battleGround.style.overflow = "hidden";
 
 //Read
 async function fetchPokemonList() {
@@ -80,6 +81,24 @@ async function fetchAndShowPokemon() {
   }
 }
 
+//Write
+function myTeamPokemon(addedPokemon) {
+  let teamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
+
+  if (teamPokemon.length < 3) {
+    teamPokemon.push(addedPokemon);
+    localStorage.setItem("teamPokemon", JSON.stringify(teamPokemon));
+    console.log("Inside Favorite Pokemon", addedPokemon);
+    showTeamPokemon();
+  } else {
+    alert(
+      "You have reached the maximum numbers of you members. Please delete pokemons!"
+    );
+  }
+}
+
+function showTeamPokemon() {}
+
 function pokemonCard(pokemonDetails) {
   pokemonList.innerHTML = "";
 
@@ -109,6 +128,7 @@ function pokemonCard(pokemonDetails) {
         pokemonHP: pokemonHP,
         pokemonAttack: pokemonAttack,
       };
+      myTeamPokemon(addedPokemon);
     });
     pokemonList.appendChild(pokedexCard);
   });
