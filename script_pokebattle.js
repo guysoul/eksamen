@@ -32,22 +32,6 @@ battleGround.style["background-position"] = "center";
 battleGround.style["min-height"] = "640px";
 battleGround.style.overflow = "hidden";
 
-pokemonHealthContainer.style.position = "relative";
-pokemonHealthContainer.style.left = "1%";
-
-healthbarContainers.style["margin-top"] = "10px";
-healthbarContainers.style.width = "300px";
-healthbarContainers.style.height = "50px";
-
-healthMemberOne.style.position = "absolute";
-healthMemberOne.style.height = "75px";
-healthMemberOne.style["background-color"] = "#539AE2";
-healthMemberOne.style.width = "175px";
-healthMemberOne.style["border-radius"] = "15px";
-
-textContainer.style.position = "relative";
-textContainer.style["z-index"] = "2";
-
 //Read
 async function fetchPokemonList() {
   const myTeamRequest = await fetch(
@@ -83,7 +67,7 @@ async function fetchPokemonInformation(pokeURL) {
 
 async function fetchAndShowPokemon() {
   try {
-    let apiAndStoragePokemon = [];
+    let apiPokemon = [];
 
     const pokemonList = await fetchPokemonList();
     const pokemonDetail = pokemonList.map((pokeMonster) =>
@@ -91,9 +75,9 @@ async function fetchAndShowPokemon() {
     );
 
     const pokemonListDetails = await Promise.all(pokemonDetail);
-    apiAndStoragePokemon = [...apiAndStoragePokemon, ...pokemonListDetails];
+    apiPokemon = [...apiPokemon, ...pokemonListDetails];
 
-    pokemonCard(apiAndStoragePokemon);
+    pokemonCard(apiPokemon);
     showTeamPokemon();
   } catch (error) {
     console.error("Unable to load pokemon list!", error);
@@ -124,7 +108,9 @@ function showTeamPokemon() {
   teamPokemon.forEach((pokeMonster) => {
     const pokedexCard = document.createElement("div");
     pokedexCard.className = "pokeimg-container-one";
-    pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}" height="96" width="96">`;
+    pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}" height="96" width="96">
+                              <div>${pokeMonster.pokemonName}<br/>
+                                 ${pokeMonster.pokemonHP} / ${pokeMonster.pokemonHP}</div>`;
     pokedexCard.style.position = "absolute";
     pokedexCard.style.bottom = "5%";
     pokedexCard.style.left = "3%";
