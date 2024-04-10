@@ -23,7 +23,7 @@ pokemonList.style.height = "100%";
 pokemonList.style.width = "30%";
 pokemonList.style["background-color"] = "lightblue";
 
-battleGround.style.height = "100%";
+battleGround.style.height = "100vh";
 battleGround.style.width = "67%";
 battleGround.style["background-image"] =
   "url('https://cdna.artstation.com/p/assets/images/images/052/645/660/large/chrysope-battle-background-new.jpg')";
@@ -57,7 +57,8 @@ async function fetchPokemonInformation(pokeURL) {
 
   return {
     pokemonName: pokemonData.name,
-    pokemonImage: pokemonData.sprites.front_default,
+    pokemonFrontImage: pokemonData.sprites.front_default,
+    pokemonBackImage: pokemonData.sprites.back_default,
     pokemonTypes: pokemonData.types[0].type.name,
     pokemonNumber: pokemonNumber,
     pokemonHP: pokemonHP,
@@ -108,7 +109,7 @@ function showTeamPokemon() {
   teamPokemon.forEach((pokeMonster) => {
     const pokedexCard = document.createElement("div");
     pokedexCard.className = "pokeimg-container-one";
-    pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}" height="96" width="96">
+    pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonBackImage}" alt="${pokeMonster.pokemonName}" height="150" width="150">
                               <div>${pokeMonster.pokemonName}<br/>
                                  ${pokeMonster.pokemonHP} / ${pokeMonster.pokemonHP}</div>`;
     pokedexCard.style.position = "absolute";
@@ -127,7 +128,7 @@ function pokemonCard(pokemonDetails) {
 
     pokedexCard.style.background = "#71C558";
     pokedexCard.className = "pokemon-card";
-    pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonImage}" alt="${pokeMonster.pokemonName}" height="96" width="96">
+    pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonFrontImage}" alt="${pokeMonster.pokemonName}" height="96" width="96">
                               <p>Name : ${pokeMonster.pokemonName}<br/>
                                  Type : ${pokeMonster.pokemonTypes}<br/>
                                  HP: ${pokeMonster.pokemonHP}<br/>
@@ -142,7 +143,8 @@ function pokemonCard(pokemonDetails) {
     addBtn.addEventListener("click", () => {
       const addedPokemon = {
         pokemonName: pokeMonster.pokemonName,
-        pokemonImage: pokeMonster.pokemonImage,
+        pokemonFrontImage: pokeMonster.pokemonFrontImage,
+        pokemonBackImage: pokeMonster.pokemonBackImage,
         pokemonTypes: pokeMonster.pokemonTypes,
         pokemonNumber: pokeMonster.pokemonNumber,
         pokemonHP: pokeMonster.pokemonHP,
