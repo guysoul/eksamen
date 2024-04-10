@@ -85,6 +85,40 @@ async function fetchAndShowPokemon() {
   }
 }
 
+async function fetchRandomEnemyPokemon() {
+  const fetchEnemyResponse = await fetch("https://pokeapi.co/api/v2/pokemon");
+  const enemyData = await fetchEnemyResponse.json();
+  const randomPokemonId = Math.floor(Math.random() * enemyData.count) + 1;
+
+  console.log("Enemy data is", enemyData);
+  console.log("Random ID is", randomPokemonId);
+
+  const fetchedEnemyResponse = await fetch(
+    `https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`
+  );
+  const fetchedEnemyData = await fetchedEnemyResponse.json();
+  let pokemonEnemyHP, pokemonEnemyAttack;
+
+  fetchedEnemyData.stats.forEach((pokeEnemyStats) => {
+    if (pokeEnemyStats.stat.name === "hp") {
+      pokemonEnemyHP = pokeEnemyStats.base_stat;
+    } else if (pokeEnemyStats.stat.name === "attack") {
+      pokemonEnemyAttack = pokeEnemyStats.base_stat;
+    }
+  });
+  const pokemonEnemyName = fetchedEnemyData.name;
+
+  console.log("Pokemon name", pokemonEnemyName);
+  return {
+    pokemonEnemyName: fetchedEnemyData.name,
+    pokemonEnemyFrontImage: fetchedEnemyData.sprites.front_default,
+    pokemonEnemyBackImage: fetchedEnemyData.sprites.back_default,
+    pokemonEnemyNumber: randomPokemonId,
+    pokemonEnemyHP: pokemonEnemyHP,
+    pokemonEnemyAttack: pokemonEnemyAttack,
+  };
+}
+
 //Write
 function myTeamPokemon(addedPokemon) {
   let teamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
