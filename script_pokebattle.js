@@ -140,7 +140,9 @@ function showTeamPokemon() {
 
   const teamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
 
-  teamPokemon.forEach((pokeMonster) => {
+  const pokedexCardWidth = 50 / teamPokemon.length;
+
+  teamPokemon.forEach((pokeMonster, index) => {
     const pokedexCard = document.createElement("div");
     pokedexCard.className = "pokeimg-container-one";
     pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonBackImage}" alt="${pokeMonster.pokemonName}" height="150" width="150">
@@ -148,7 +150,7 @@ function showTeamPokemon() {
                                  ${pokeMonster.pokemonHP} / ${pokeMonster.pokemonHP}</div>`;
     pokedexCard.style.position = "absolute";
     pokedexCard.style.bottom = "5%";
-    pokedexCard.style.left = "3%";
+    pokedexCard.style.left = `${index * pokedexCardWidth}%`;
 
     battleGround.appendChild(pokedexCard);
   });
