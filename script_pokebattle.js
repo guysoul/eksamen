@@ -266,13 +266,13 @@ async function attackEnemyPokemon(attackerPokemon) {
 
     console.log("The alive pokemon", alivePokemonList);
 
-    if (alivePokemonList.length > 0) {
+    if (alivePokemonList.length >= 0) {
       const attackRandomAlivePokemon = Math.floor(
         Math.random() * alivePokemonList.length
       );
       const alivePokemonToAttack = alivePokemonList[attackRandomAlivePokemon];
 
-      await attackMyTeamPokemon(alivePokemonToAttack, fetchedCurrentEnemy);
+      attackMyTeamPokemon(alivePokemonToAttack, fetchedCurrentEnemy);
     } else {
       console.log("error");
     }
@@ -281,7 +281,7 @@ async function attackEnemyPokemon(attackerPokemon) {
   }
 }
 
-async function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
+function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
   try {
     const attackerHealthDamage = enemyPokemon.pokemonEnemyAttack;
     pokemonWhoAttacked.pokemonHP -= attackerHealthDamage;
