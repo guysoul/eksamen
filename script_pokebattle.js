@@ -174,7 +174,8 @@ function showTeamPokemon() {
 
   teamPokemon.forEach((pokeMonster, index) => {
     const pokedexCard = document.createElement("div");
-    pokedexCard.className = `pokeimg-container-${index}`;
+
+    pokedexCard.className = `pokeimg-container`;
     pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonBackImage}" alt="${pokeMonster.pokemonName}" height="150" width="150">
                               <div>${pokeMonster.pokemonName}<br/>
                                  ${pokeMonster.pokemonHP} / ${pokeMonster.pokemonHP}</div>`;
