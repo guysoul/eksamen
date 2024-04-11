@@ -239,6 +239,7 @@ function pokemonCard(pokemonDetails) {
   });
 }
 
+//Team Pokemon Attacks the enemy pokemon
 async function attackEnemyPokemon(attackerPokemon) {
   try {
     const fetchedCurrentEnemy = await fetchRandomEnemyPokemon();
@@ -248,14 +249,17 @@ async function attackEnemyPokemon(attackerPokemon) {
 
     fetchedCurrentEnemy.pokemonEnemyHP -= attackerPokemon.pokemonAttack;
 
-    alert(`Current health of enemy is ${fetchedCurrentEnemy.pokemonEnemyHP}`);
-
     const enemyPokemonCard = document.querySelector(".enemyimg-container");
     enemyPokemonCard.innerHTML = `<img src="${fetchedCurrentEnemy.pokemonEnemyFrontImage}" alt="${fetchedCurrentEnemy.pokemonEnemyName}" height="150" width="150">
                                   <div>${fetchedCurrentEnemy.pokemonEnemyName}<br/>
                                  ${fetchedCurrentEnemy.pokemonEnemyHP} / ${fetchedCurrentEnemy.pokemonOriginalEnemyHP}<br/>
                                  Attack Damage : ${fetchedCurrentEnemy.pokemonEnemyAttack}
                                  </div>`;
+
+    //check when enemy is defeated
+    if (fetchedCurrentEnemy.pokemonEnemyHP <= 0) {
+      isRandomEnemyDefeated(enemyPokemonCard);
+    }
 
     //get the list of alive in teampokemon
     let myTeamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
@@ -271,13 +275,14 @@ async function attackEnemyPokemon(attackerPokemon) {
 
       attackMyTeamPokemon(alivePokemonToAttack, fetchedCurrentEnemy);
     } else {
-      console.log("error");
+      console.log("All pokemon are dead! You lost the game!");
     }
   } catch (error) {
     console.log("Unable to attack the enemy", error);
   }
 }
 
+//Enemy attacks the team pokemon randomly
 function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
   try {
     const attackerHealthDamage = enemyPokemon.pokemonEnemyAttack;
@@ -295,6 +300,11 @@ function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
   } catch (error) {
     console.error("My team pokemon is unable to attack", error);
   }
+}
+
+function isRandomEnemyDefeated(enemyPokemonCard) {
+  enemyPokemonCard.parentNode.removeChild(enemyPokemonCard);
+  alert("Team Pokemon have won!");
 }
 
 fetchAndShowPokemon();
