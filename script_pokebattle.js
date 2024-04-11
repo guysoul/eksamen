@@ -178,7 +178,7 @@ function showTeamPokemon() {
   teamPokemon.forEach((pokeMonster, index) => {
     const pokedexCard = document.createElement("div");
 
-    pokedexCard.className = `pokeimg-container`;
+    pokedexCard.className = `pokeimg-container-${index}`;
     pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonBackImage}" alt="${pokeMonster.pokemonName}" height="150" width="150">
                               <div>${pokeMonster.pokemonName}<br/>
                                  ${pokeMonster.pokemonHP} / ${pokeMonster.pokemonHP}</div>`;
@@ -303,8 +303,8 @@ function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
 }
 
 function isRandomEnemyDefeated(enemyPokemonCard) {
-  enemyPokemonCard.parentNode.removeChild(enemyPokemonCard);
   alert("Team Pokemon have won!");
+  enemyPokemonCard.parentNode.removeChild(enemyPokemonCard);
 }
 
 fetchAndShowPokemon();
