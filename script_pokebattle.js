@@ -168,6 +168,10 @@ function showTeamPokemon() {
     pokedexCard.style.bottom = "5%";
     pokedexCard.style.left = `${index * pokedexCardWidth}%`;
 
+    pokedexCard.addEventListener("click", () => {
+      console.log("I have attacked", pokeMonster.pokemonName);
+    });
+
     battleGround.appendChild(pokedexCard);
   });
 }
