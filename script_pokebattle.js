@@ -207,7 +207,7 @@ function pokemonCard(pokemonDetails) {
                                  HP: ${pokeMonster.pokemonHP}<br/>
                                  Attack : ${pokeMonster.pokemonAttack}<br/>
                               </p>
-                              <button class="add-btn">Add Pokemon</button>`;
+                              <button class="add-btn">Select</button>`;
     pokedexCard.style["border-radius"] = "15px";
     pokedexCard.style.border = "2px";
     pokedexCard.style.padding = "10px";
@@ -233,15 +233,20 @@ async function attackEnemyPokemon(attackerPokemon) {
   try {
     console.log("Inside attackEnemyPOkemon", attackerPokemon);
     console.log(attackerPokemon.pokemonName);
-    const fetchedCurrentRandomEnemy = await fetchRandomEnemyPokemon();
-    console.log(
-      "the enemy pokemon is",
-      fetchedCurrentRandomEnemy.pokemonEnemyName
-    );
+    const fetchedCurrentEnemy = await fetchRandomEnemyPokemon();
+    console.log("the enemy pokemon is", fetchedCurrentEnemy.pokemonEnemyName);
 
     alert(
-      `${attackerPokemon.pokemonName} has done ${attackerPokemon.pokemonAttack} damage to ${fetchedCurrentRandomEnemy.pokemonEnemyName} `
+      `${attackerPokemon.pokemonName} has done ${attackerPokemon.pokemonAttack} damage to ${fetchedCurrentEnemy.pokemonEnemyName} `
     );
+
+    fetchedCurrentEnemy.pokemonEnemyHP -= attackerPokemon.pokemonAttack;
+
+    alert(`Current health of enemy is ${fetchedCurrentEnemy.pokemonEnemyHP}`);
+    const enemyPokemonCard = document.querySelector(".enemyimg-container");
+    enemyPokemonCard.innerHTML = `<img src="${fetchedCurrentEnemy.pokemonEnemyFrontImage}" alt="${fetchedCurrentEnemy.pokemonEnemyName}" height="150" width="150">
+                                  <div>${fetchedCurrentEnemy.pokemonEnemyName}<br/>
+                                 ${fetchedCurrentEnemy.pokemonEnemyHP} / ${fetchedCurrentEnemy.pokemonEnemyHP}</div>`;
   } catch (error) {
     console.log("Unable to attack the enemy", error);
   }
