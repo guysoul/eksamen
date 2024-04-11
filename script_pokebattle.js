@@ -292,11 +292,23 @@ function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
       `${enemyPokemon.pokemonEnemyName} has attacked ${pokemonWhoAttacked.pokemonName}`
     );
 
-    const pokedexCard = document.querySelector(".pokeimg-container");
-    console.log("pokedexCard", pokedexCard);
-    pokedexCard.innerHTML = `<img src="${pokemonWhoAttacked.pokemonBackImage}" alt="${pokemonWhoAttacked.pokemonName}" height="150" width="150">
+    console.log(
+      "This is the pokemon being attacked!",
+      pokemonWhoAttacked.pokemonNumber
+    );
+    const teamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
+    teamPokemon.forEach((pokeMonster, index) => {
+      if (pokeMonster.pokemonNumber === pokemonWhoAttacked.pokemonNumber) {
+        const pokedexCard = document.querySelector(
+          `.pokeimg-container-${index}`
+        );
+        console.log("pokedexCard", pokedexCard);
+        pokedexCard.innerHTML = `<img src="${pokemonWhoAttacked.pokemonBackImage}" alt="${pokemonWhoAttacked.pokemonName}" height="150" width="150">
                               <div>${pokemonWhoAttacked.pokemonName}<br/>
                                  ${pokemonWhoAttacked.pokemonHP} / ${pokemonWhoAttacked.pokemonOriginalHP}</div>`;
+        console.log("Found the correct Pokemon");
+      }
+    });
   } catch (error) {
     console.error("My team pokemon is unable to attack", error);
   }
