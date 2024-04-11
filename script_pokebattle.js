@@ -33,6 +33,8 @@ battleGround.style["background-position"] = "center";
 battleGround.style["min-height"] = "640px";
 battleGround.style.overflow = "hidden";
 
+let currentEnemyRandomPokemon = null;
+
 //Read
 async function fetchPokemonList() {
   const myTeamRequest = await fetch(
@@ -87,32 +89,41 @@ async function fetchAndShowPokemon() {
 }
 
 async function fetchRandomEnemyPokemon() {
-  const fetchEnemyResponse = await fetch("https://pokeapi.co/api/v2/pokemon");
-  let enemyData = await fetchEnemyResponse.json();
-  const randomPokemonId = Math.floor(Math.random() * enemyData.count) + 1;
-
-  const fetchedEnemyResponse = await fetch(
-    `https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`
-  );
-  const fetchedEnemyData = await fetchedEnemyResponse.json();
-  let pokemonEnemyHP, pokemonEnemyAttack;
-
-  fetchedEnemyData.stats.forEach((pokeEnemyStats) => {
-    if (pokeEnemyStats.stat.name === "hp") {
-      pokemonEnemyHP = pokeEnemyStats.base_stat;
-    } else if (pokeEnemyStats.stat.name === "attack") {
-      pokemonEnemyAttack = pokeEnemyStats.base_stat;
+  try {
+    if (currentEnemyRandomPokemon) {
+      return currentEnemyRandomPokemon;
     }
-  });
+    const fetchEnemyResponse = await fetch("https://pokeapi.co/api/v2/pokemon");
+    let enemyData = await fetchEnemyResponse.json();
+    const randomPokemonId = Math.floor(Math.random() * enemyData.count) + 1;
 
-  return {
-    pokemonEnemyName: fetchedEnemyData.name,
-    pokemonEnemyFrontImage: fetchedEnemyData.sprites.front_default,
-    pokemonEnemyBackImage: fetchedEnemyData.sprites.back_default,
-    pokemonEnemyNumber: randomPokemonId,
-    pokemonEnemyHP: pokemonEnemyHP,
-    pokemonEnemyAttack: pokemonEnemyAttack,
-  };
+    const fetchedEnemyResponse = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`
+    );
+    const fetchedEnemyData = await fetchedEnemyResponse.json();
+    let pokemonEnemyHP, pokemonEnemyAttack;
+
+    fetchedEnemyData.stats.forEach((pokeEnemyStats) => {
+      if (pokeEnemyStats.stat.name === "hp") {
+        pokemonEnemyHP = pokeEnemyStats.base_stat;
+      } else if (pokeEnemyStats.stat.name === "attack") {
+        pokemonEnemyAttack = pokeEnemyStats.base_stat;
+      }
+    });
+
+    currentEnemyRandomPokemon = {
+      pokemonEnemyName: fetchedEnemyData.name,
+      pokemonEnemyFrontImage: fetchedEnemyData.sprites.front_default,
+      pokemonEnemyBackImage: fetchedEnemyData.sprites.back_default,
+      pokemonEnemyNumber: randomPokemonId,
+      pokemonEnemyHP: pokemonEnemyHP,
+      pokemonEnemyAttack: pokemonEnemyAttack,
+    };
+
+    return currentEnemyRandomPokemon;
+  } catch (error) {
+    console.error("Unable to fetch random enemy pokemon", error);
+  }
 }
 
 //Write
@@ -169,7 +180,13 @@ function showTeamPokemon() {
     pokedexCard.style.left = `${index * pokedexCardWidth}%`;
 
     pokedexCard.addEventListener("click", () => {
-      console.log("I have attacked", pokeMonster.pokemonName);
+      const attackerPokemon = {
+        pokemonName: pokeMonster.pokemonName,
+        pokemonHP: pokeMonster.pokemonHP,
+        pokemonAttack: pokeMonster.pokemonAttack,
+      };
+
+      attackEnemyPokemon(attackerPokemon);
     });
 
     battleGround.appendChild(pokedexCard);
@@ -210,6 +227,24 @@ function pokemonCard(pokemonDetails) {
     });
     pokemonList.appendChild(pokedexCard);
   });
+}
+
+async function attackEnemyPokemon(attackerPokemon) {
+  try {
+    console.log("Inside attackEnemyPOkemon", attackerPokemon);
+    console.log(attackerPokemon.pokemonName);
+    const fetchedCurrentRandomEnemy = await fetchRandomEnemyPokemon();
+    console.log(
+      "the enemy pokemon is",
+      fetchedCurrentRandomEnemy.pokemonEnemyName
+    );
+
+    alert(
+      `${attackerPokemon.pokemonName} has done ${attackerPokemon.pokemonAttack} damage to ${fetchedCurrentRandomEnemy.pokemonEnemyName} `
+    );
+  } catch (error) {
+    console.log("Unable to attack the enemy", error);
+  }
 }
 
 fetchAndShowPokemon();
