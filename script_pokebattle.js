@@ -44,6 +44,7 @@ async function fetchPokemonList() {
   return myTeamResult.results;
 }
 
+//fetched pokemonDetails from API
 async function fetchPokemonInformation(pokeURL) {
   const pokemonNumber = pokeURL.match(/\/(\d+)\/$/)[1];
   const fetchPokemonResponse = await fetch(pokeURL);
@@ -65,10 +66,12 @@ async function fetchPokemonInformation(pokeURL) {
     pokemonTypes: pokemonData.types[0].type.name,
     pokemonNumber: pokemonNumber,
     pokemonHP: pokemonHP,
+    pokemonOriginalHP: pokemonHP,
     pokemonAttack: pokemonAttack,
   };
 }
 
+//Display pokemon list and team pokemon
 async function fetchAndShowPokemon() {
   try {
     let apiPokemon = [];
@@ -127,7 +130,7 @@ async function fetchRandomEnemyPokemon() {
   }
 }
 
-//Write
+//Added to the localStorage for keeping the values
 function myTeamPokemon(addedPokemon) {
   let teamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
 
@@ -227,6 +230,7 @@ function pokemonCard(pokemonDetails) {
         pokemonTypes: pokeMonster.pokemonTypes,
         pokemonNumber: pokeMonster.pokemonNumber,
         pokemonHP: pokeMonster.pokemonHP,
+        pokemonOriginalHP: pokeMonster.pokemonHP,
         pokemonAttack: pokeMonster.pokemonAttack,
       };
       myTeamPokemon(addedPokemon);
@@ -240,6 +244,7 @@ async function attackEnemyPokemon(attackerPokemon) {
     console.log("Inside attackEnemyPOkemon", attackerPokemon);
     console.log(attackerPokemon.pokemonName);
     console.log(attackerPokemon.pokemonNumber);
+    console.log(attackerPokemon.pokemonOriginalHP);
     const fetchedCurrentEnemy = await fetchRandomEnemyPokemon();
     console.log("the enemy pokemon is", fetchedCurrentEnemy.pokemonEnemyName);
 
