@@ -152,7 +152,8 @@ async function showEnemyPokemon() {
     enemyPokemonCard.className = "enemyimg-container";
     enemyPokemonCard.innerHTML = `<img src="${enemyPokemon.pokemonEnemyFrontImage}" alt="${enemyPokemon.pokemonEnemyName}" height="150" width="150">
                                   <div>${enemyPokemon.pokemonEnemyName}<br/>
-                                 ${enemyPokemon.pokemonEnemyHP} / ${enemyPokemon.pokemonEnemyHP}</div>`;
+                                 ${enemyPokemon.pokemonEnemyHP} / ${enemyPokemon.pokemonEnemyHP}<br/>
+                                 Attack Damage: ${enemyPokemon.pokemonEnemyAttack}</div>`;
     enemyPokemonCard.style.position = "absolute";
     enemyPokemonCard.style.top = "50%";
     enemyPokemonCard.style.left = "50%";
@@ -183,8 +184,10 @@ function showTeamPokemon() {
 
     pokedexCard.addEventListener("click", () => {
       const attackerPokemon = {
+        pokemonNumber: pokeMonster.pokemonNumber,
         pokemonName: pokeMonster.pokemonName,
         pokemonHP: pokeMonster.pokemonHP,
+        pokemonOriginalHP: pokeMonster.pokemonHP,
         pokemonAttack: pokeMonster.pokemonAttack,
       };
 
@@ -235,6 +238,7 @@ async function attackEnemyPokemon(attackerPokemon) {
   try {
     console.log("Inside attackEnemyPOkemon", attackerPokemon);
     console.log(attackerPokemon.pokemonName);
+    console.log(attackerPokemon.pokemonNumber);
     const fetchedCurrentEnemy = await fetchRandomEnemyPokemon();
     console.log("the enemy pokemon is", fetchedCurrentEnemy.pokemonEnemyName);
 
@@ -249,9 +253,49 @@ async function attackEnemyPokemon(attackerPokemon) {
     const enemyPokemonCard = document.querySelector(".enemyimg-container");
     enemyPokemonCard.innerHTML = `<img src="${fetchedCurrentEnemy.pokemonEnemyFrontImage}" alt="${fetchedCurrentEnemy.pokemonEnemyName}" height="150" width="150">
                                   <div>${fetchedCurrentEnemy.pokemonEnemyName}<br/>
-                                 ${fetchedCurrentEnemy.pokemonEnemyHP} / ${fetchedCurrentEnemy.pokemonOriginalEnemyHP}</div>`;
+                                 ${fetchedCurrentEnemy.pokemonEnemyHP} / ${fetchedCurrentEnemy.pokemonOriginalEnemyHP}<br/>
+                                 Attack Damage : ${fetchedCurrentEnemy.pokemonEnemyAttack}
+                                 </div>`;
+
+    //get the list of alive in teampokemon
+    let myTeamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
+    const alivePokemonList = myTeamPokemon.filter(
+      (alivePokemon) => alivePokemon.pokemonHP > 0
+    );
+
+    console.log("The alive pokemon", alivePokemonList);
+
+    if (alivePokemonList.length > 0) {
+      const attackRandomAlivePokemon = Math.floor(
+        Math.random() * alivePokemonList.length
+      );
+      const alivePokemonToAttack = alivePokemonList[attackRandomAlivePokemon];
+
+      await attackMyTeamPokemon(alivePokemonToAttack, fetchedCurrentEnemy);
+    } else {
+      console.log("error");
+    }
   } catch (error) {
     console.log("Unable to attack the enemy", error);
+  }
+}
+
+async function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
+  try {
+    const attackerHealthDamage = enemyPokemon.pokemonEnemyAttack;
+    pokemonWhoAttacked.pokemonHP -= attackerHealthDamage;
+
+    alert(
+      `${enemyPokemon.pokemonEnemyName} has attacked ${pokemonWhoAttacked.pokemonName}`
+    );
+
+    const pokedexCard = document.querySelector(".pokeimg-container");
+    console.log("pokedexCard", pokedexCard);
+    pokedexCard.innerHTML = `<img src="${pokemonWhoAttacked.pokemonBackImage}" alt="${pokemonWhoAttacked.pokemonName}" height="150" width="150">
+                              <div>${pokemonWhoAttacked.pokemonName}<br/>
+                                 ${pokemonWhoAttacked.pokemonHP} / ${pokemonWhoAttacked.pokemonOriginalHP}</div>`;
+  } catch (error) {
+    console.error("My team pokemon is unable to attack", error);
   }
 }
 
