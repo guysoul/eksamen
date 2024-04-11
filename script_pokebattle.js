@@ -241,13 +241,7 @@ function pokemonCard(pokemonDetails) {
 
 async function attackEnemyPokemon(attackerPokemon) {
   try {
-    console.log("Inside attackEnemyPOkemon", attackerPokemon);
-    console.log(attackerPokemon.pokemonName);
-    console.log(attackerPokemon.pokemonNumber);
-    console.log(attackerPokemon.pokemonOriginalHP);
     const fetchedCurrentEnemy = await fetchRandomEnemyPokemon();
-    console.log("the enemy pokemon is", fetchedCurrentEnemy.pokemonEnemyName);
-
     alert(
       `${attackerPokemon.pokemonName} has done ${attackerPokemon.pokemonAttack} damage to ${fetchedCurrentEnemy.pokemonEnemyName} `
     );
@@ -268,8 +262,6 @@ async function attackEnemyPokemon(attackerPokemon) {
     const alivePokemonList = myTeamPokemon.filter(
       (alivePokemon) => alivePokemon.pokemonHP > 0
     );
-
-    console.log("The alive pokemon", alivePokemonList);
 
     if (alivePokemonList.length >= 0) {
       const attackRandomAlivePokemon = Math.floor(
