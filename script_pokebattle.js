@@ -1,6 +1,7 @@
 const mainContainer = document.querySelector(".main-container");
 const pokemonList = document.querySelector(".pokemon-list");
 const battleGround = document.querySelector(".battle-ground");
+const battleContainer = document.querySelector(".battle-container");
 
 const pokemonHealthContainer = document.querySelector(
   ".pokemon-health-containers"
@@ -87,11 +88,8 @@ async function fetchAndShowPokemon() {
 
 async function fetchRandomEnemyPokemon() {
   const fetchEnemyResponse = await fetch("https://pokeapi.co/api/v2/pokemon");
-  const enemyData = await fetchEnemyResponse.json();
+  let enemyData = await fetchEnemyResponse.json();
   const randomPokemonId = Math.floor(Math.random() * enemyData.count) + 1;
-
-  console.log("Enemy data is", enemyData);
-  console.log("Random ID is", randomPokemonId);
 
   const fetchedEnemyResponse = await fetch(
     `https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`
@@ -106,9 +104,7 @@ async function fetchRandomEnemyPokemon() {
       pokemonEnemyAttack = pokeEnemyStats.base_stat;
     }
   });
-  const pokemonEnemyName = fetchedEnemyData.name;
 
-  console.log("Pokemon name", pokemonEnemyName);
   return {
     pokemonEnemyName: fetchedEnemyData.name,
     pokemonEnemyFrontImage: fetchedEnemyData.sprites.front_default,
@@ -117,6 +113,26 @@ async function fetchRandomEnemyPokemon() {
     pokemonEnemyHP: pokemonEnemyHP,
     pokemonEnemyAttack: pokemonEnemyAttack,
   };
+}
+
+async function showEnemyPokemon() {
+  try {
+    const enemyPokemon = await fetchRandomEnemyPokemon();
+
+    const enemyPokemonCard = document.createElement("div");
+    enemyPokemonCard.className = "enemyimg-container";
+    enemyPokemonCard.innerHTML = `<img src="${enemyPokemon.pokemonEnemyFrontImage}" alt="${enemyPokemon.pokemonEnemyName}" height="150" width="150">
+                                  <div>${enemyPokemon.pokemonEnemyName}<br/>
+                                 ${enemyPokemon.pokemonEnemyHP} / ${enemyPokemon.pokemonEnemyHP}</div>`;
+    enemyPokemonCard.style.position = "absolute";
+    enemyPokemonCard.style.top = "50%";
+    enemyPokemonCard.style.left = "50%";
+    enemyPokemonCard.style.transform = "translate(-50%, -50%)";
+
+    battleGround.appendChild(enemyPokemonCard);
+  } catch (error) {
+    console.error("Unable to display the enemy Pokemon", error);
+  }
 }
 
 //Write
@@ -144,7 +160,7 @@ function showTeamPokemon() {
 
   teamPokemon.forEach((pokeMonster, index) => {
     const pokedexCard = document.createElement("div");
-    pokedexCard.className = "pokeimg-container-one";
+    pokedexCard.className = `pokeimg-container-${index}`;
     pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonBackImage}" alt="${pokeMonster.pokemonName}" height="150" width="150">
                               <div>${pokeMonster.pokemonName}<br/>
                                  ${pokeMonster.pokemonHP} / ${pokeMonster.pokemonHP}</div>`;
@@ -193,3 +209,4 @@ function pokemonCard(pokemonDetails) {
 }
 
 fetchAndShowPokemon();
+showEnemyPokemon();
