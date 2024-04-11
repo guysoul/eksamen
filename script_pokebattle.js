@@ -115,6 +115,22 @@ async function fetchRandomEnemyPokemon() {
   };
 }
 
+//Write
+function myTeamPokemon(addedPokemon) {
+  let teamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
+
+  if (teamPokemon.length < 3) {
+    teamPokemon.push(addedPokemon);
+    localStorage.setItem("teamPokemon", JSON.stringify(teamPokemon));
+    console.log("Inside Favorite Pokemon", addedPokemon);
+    showTeamPokemon();
+  } else {
+    alert(
+      "You have reached the maximum numbers of you members. Please delete pokemons!"
+    );
+  }
+}
+
 async function showEnemyPokemon() {
   try {
     const enemyPokemon = await fetchRandomEnemyPokemon();
@@ -132,22 +148,6 @@ async function showEnemyPokemon() {
     battleGround.appendChild(enemyPokemonCard);
   } catch (error) {
     console.error("Unable to display the enemy Pokemon", error);
-  }
-}
-
-//Write
-function myTeamPokemon(addedPokemon) {
-  let teamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
-
-  if (teamPokemon.length < 3) {
-    teamPokemon.push(addedPokemon);
-    localStorage.setItem("teamPokemon", JSON.stringify(teamPokemon));
-    console.log("Inside Favorite Pokemon", addedPokemon);
-    showTeamPokemon();
-  } else {
-    alert(
-      "You have reached the maximum numbers of you members. Please delete pokemons!"
-    );
   }
 }
 
