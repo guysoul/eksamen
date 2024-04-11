@@ -117,6 +117,7 @@ async function fetchRandomEnemyPokemon() {
       pokemonEnemyBackImage: fetchedEnemyData.sprites.back_default,
       pokemonEnemyNumber: randomPokemonId,
       pokemonEnemyHP: pokemonEnemyHP,
+      pokemonOriginalEnemyHP: pokemonEnemyHP,
       pokemonEnemyAttack: pokemonEnemyAttack,
     };
 
@@ -135,6 +136,7 @@ function myTeamPokemon(addedPokemon) {
     localStorage.setItem("teamPokemon", JSON.stringify(teamPokemon));
     console.log("Inside Favorite Pokemon", addedPokemon);
     showTeamPokemon();
+    showEnemyPokemon();
   } else {
     alert(
       "You have reached the maximum numbers of you members. Please delete pokemons!"
@@ -243,10 +245,11 @@ async function attackEnemyPokemon(attackerPokemon) {
     fetchedCurrentEnemy.pokemonEnemyHP -= attackerPokemon.pokemonAttack;
 
     alert(`Current health of enemy is ${fetchedCurrentEnemy.pokemonEnemyHP}`);
+
     const enemyPokemonCard = document.querySelector(".enemyimg-container");
     enemyPokemonCard.innerHTML = `<img src="${fetchedCurrentEnemy.pokemonEnemyFrontImage}" alt="${fetchedCurrentEnemy.pokemonEnemyName}" height="150" width="150">
                                   <div>${fetchedCurrentEnemy.pokemonEnemyName}<br/>
-                                 ${fetchedCurrentEnemy.pokemonEnemyHP} / ${fetchedCurrentEnemy.pokemonEnemyHP}</div>`;
+                                 ${fetchedCurrentEnemy.pokemonEnemyHP} / ${fetchedCurrentEnemy.pokemonOriginalEnemyHP}</div>`;
   } catch (error) {
     console.log("Unable to attack the enemy", error);
   }
