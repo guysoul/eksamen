@@ -36,6 +36,7 @@ async function fetchPokemonList() {
 }
 
 //Fetch all secondary details of a pokemon
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match
 async function fetchPokemonInformation(pokeURL) {
   const pokemonNumber = pokeURL.match(/\/(\d+)\/$/)[1];
   const fetchPokemonResponse = await fetch(pokeURL);
