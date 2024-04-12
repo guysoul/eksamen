@@ -193,6 +193,7 @@ function showTeamPokemon() {
         pokemonHP: pokeMonster.pokemonHP,
         pokemonOriginalHP: pokeMonster.pokemonHP,
         pokemonAttack: pokeMonster.pokemonAttack,
+        pokemonAlive: pokeMonster.pokemonAlive,
       };
 
       attackEnemyPokemon(attackerPokemon);
@@ -204,6 +205,7 @@ function showTeamPokemon() {
 
 function pokemonCard(pokemonDetails) {
   pokemonList.innerHTML = "";
+  const pokemonStatusAlive = true;
 
   pokemonDetails.forEach((pokeMonster) => {
     const pokedexCard = document.createElement("div");
@@ -232,6 +234,7 @@ function pokemonCard(pokemonDetails) {
         pokemonHP: pokeMonster.pokemonHP,
         pokemonOriginalHP: pokeMonster.pokemonHP,
         pokemonAttack: pokeMonster.pokemonAttack,
+        pokemonAlive: pokemonStatusAlive,
       };
       myTeamPokemon(addedPokemon);
     });
@@ -246,7 +249,6 @@ async function attackEnemyPokemon(attackerPokemon) {
     alert(
       `${attackerPokemon.pokemonName} has done ${attackerPokemon.pokemonAttack} damage to ${fetchedCurrentEnemy.pokemonEnemyName} `
     );
-
     fetchedCurrentEnemy.pokemonEnemyHP -= attackerPokemon.pokemonAttack;
 
     const enemyPokemonCard = document.querySelector(".enemyimg-container");
@@ -284,6 +286,8 @@ async function attackEnemyPokemon(attackerPokemon) {
 
 //Enemy attacks the team pokemon randomly
 function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
+  const myTeamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
+
   try {
     const attackerHealthDamage = enemyPokemon.pokemonEnemyAttack;
     pokemonWhoAttacked.pokemonHP -= attackerHealthDamage;
@@ -296,8 +300,23 @@ function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
       "This is the pokemon being attacked!",
       pokemonWhoAttacked.pokemonNumber
     );
-    const teamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
-    teamPokemon.forEach((pokeMonster, index) => {
+    //checks if one of team pokemon is still alive
+    if (pokemonAlive(pokemonWhoAttacked)) {
+      myTeamPokemon.forEach((pokeMonster, index) => {
+        if (pokeMonster.pokemonNumber === pokemonWhoAttacked.pokemonNumber) {
+          const pokedexCard = document.querySelector(
+            `.pokeimg-container-${index}`
+          );
+          pokedexCard.innerHTML = `<img src="${pokemonWhoAttacked.pokemonBackImage}" alt="${pokemonWhoAttacked.pokemonName}" height="150" width="150">
+                              <div>${pokemonWhoAttacked.pokemonName}<br/>
+                                 ${pokemonWhoAttacked.pokemonHP} / ${pokemonWhoAttacked.pokemonOriginalHP}</div>`;
+          pokeMonster.pokemonAlive = false;
+          localStorage.setItem("teamPokemon", JSON.stringify(myTeamPokemon));
+        }
+      });
+    }
+
+    myTeamPokemon.forEach((pokeMonster, index) => {
       if (pokeMonster.pokemonNumber === pokemonWhoAttacked.pokemonNumber) {
         const pokedexCard = document.querySelector(
           `.pokeimg-container-${index}`
@@ -317,6 +336,10 @@ function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
 function isRandomEnemyDefeated(enemyPokemonCard) {
   alert("Team Pokemon have won!");
   enemyPokemonCard.parentNode.removeChild(enemyPokemonCard);
+}
+
+function pokemonAlive(teamPokemon) {
+  return teamPokemon.pokemonHP <= 0;
 }
 
 fetchAndShowPokemon();
