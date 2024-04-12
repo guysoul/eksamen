@@ -151,7 +151,6 @@ function myTeamPokemon(addedPokemon) {
 }
 
 async function showEnemyPokemon() {
-  battleContainer.innerHTML = "";
   try {
     const enemyPokemon = await fetchRandomEnemyPokemon();
 
@@ -257,7 +256,7 @@ async function attackEnemyPokemon(attackerPokemon) {
 
     const enemyPokemonCard = document.querySelector(".enemyimg-container");
     enemyPokemonCard.innerHTML = `<img src="${fetchedCurrentEnemy.pokemonEnemyFrontImage}" alt="${fetchedCurrentEnemy.pokemonEnemyName}" height="150" width="150">
-                                  <div>${fetchedCurrentEnemy.pokemonEnemyName}<br/>
+                                  <div style="background-color: #71C558;">${fetchedCurrentEnemy.pokemonEnemyName}<br/>
                                  ${fetchedCurrentEnemy.pokemonEnemyHP} / ${fetchedCurrentEnemy.pokemonOriginalEnemyHP}<br/>
                                  Attack Damage : ${fetchedCurrentEnemy.pokemonEnemyAttack}
                                  </div>`;
@@ -301,21 +300,6 @@ function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
       `${enemyPokemon.pokemonEnemyName} has attacked ${pokemonWhoAttacked.pokemonName}`
     );
 
-    //checks if one of team pokemon is still alive
-    if (pokemonAlive(pokemonWhoAttacked)) {
-      const pokemonToBeDeleted = myTeamPokemon.findIndex(
-        (pokeMonster) =>
-          pokeMonster.pokemonNumber === pokemonWhoAttacked.pokemonNumber
-      );
-
-      //deletes the pokemon in the localstorage
-      if (pokemonToBeDeleted != -1) {
-        myTeamPokemon.splice(pokemonToBeDeleted, 1);
-        localStorage.setItem("teamPokemon", JSON.stringify(myTeamPokemon));
-        showTeamPokemon();
-      }
-    }
-
     //updates the HP everytime the specific pokemon has been attacked
     myTeamPokemon.forEach((pokeMonster, index) => {
       if (pokeMonster.pokemonNumber === pokemonWhoAttacked.pokemonNumber) {
@@ -324,9 +308,25 @@ function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
         );
         console.log("pokedexCard", pokedexCard);
         pokedexCard.innerHTML = `<img src="${pokemonWhoAttacked.pokemonBackImage}" alt="${pokemonWhoAttacked.pokemonName}" height="150" width="150">
-                              <div>${pokemonWhoAttacked.pokemonName}<br/>
+                              <div style="background-color: #71C558;">${pokemonWhoAttacked.pokemonName}<br/>
                                  ${pokemonWhoAttacked.pokemonHP} / ${pokemonWhoAttacked.pokemonOriginalHP}</div>`;
         console.log("Found the correct Pokemon");
+      }
+
+      //checks if one of team pokemon is still alive
+      if (pokemonAlive(pokemonWhoAttacked)) {
+        const pokemonToBeDeleted = myTeamPokemon.findIndex(
+          (pokeMonster) =>
+            pokeMonster.pokemonNumber === pokemonWhoAttacked.pokemonNumber
+        );
+
+        //deletes the pokemon in the localstorage
+        if (pokemonToBeDeleted != -1) {
+          myTeamPokemon.splice(pokemonToBeDeleted, 1);
+          localStorage.setItem("teamPokemon", JSON.stringify(myTeamPokemon));
+          pokedexCard.parentNode.removeChild(pokedexCard);
+        }
+        //showTeamPokemon();
       }
     });
   } catch (error) {
