@@ -311,22 +311,21 @@ function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
                               <div style="background-color: #71C558;">${pokemonWhoAttacked.pokemonName}<br/>
                                  ${pokemonWhoAttacked.pokemonHP} / ${pokemonWhoAttacked.pokemonOriginalHP}</div>`;
         console.log("Found the correct Pokemon");
-      }
 
-      //checks if one of team pokemon is still alive
-      if (pokemonAlive(pokemonWhoAttacked)) {
-        const pokemonToBeDeleted = myTeamPokemon.findIndex(
-          (pokeMonster) =>
-            pokeMonster.pokemonNumber === pokemonWhoAttacked.pokemonNumber
-        );
+        //checks if one of team pokemon is still alive
+        if (pokemonAlive(pokemonWhoAttacked)) {
+          const pokemonToBeDeleted = myTeamPokemon.findIndex(
+            (pokeMonster) =>
+              pokeMonster.pokemonNumber === pokemonWhoAttacked.pokemonNumber
+          );
 
-        //deletes the pokemon in the localstorage
-        if (pokemonToBeDeleted != -1) {
-          myTeamPokemon.splice(pokemonToBeDeleted, 1);
-          localStorage.setItem("teamPokemon", JSON.stringify(myTeamPokemon));
-          pokedexCard.parentNode.removeChild(pokedexCard);
+          //deletes the pokemon in the localstorage
+          if (pokemonToBeDeleted != -1) {
+            myTeamPokemon.splice(pokemonToBeDeleted, 1);
+            localStorage.setItem("teamPokemon", JSON.stringify(myTeamPokemon));
+            pokedexCard.parentNode.removeChild(pokedexCard);
+          }
         }
-        //showTeamPokemon();
       }
     });
   } catch (error) {
