@@ -24,7 +24,7 @@ pokemonList.style.height = "100%";
 pokemonList.style.width = "30%";
 pokemonList.style["background-color"] = "lightblue";
 
-battleGround.style.height = "100vh";
+battleGround.style.height = "100%";
 battleGround.style.width = "67%";
 battleGround.style["background-image"] =
   "url('https://cdna.artstation.com/p/assets/images/images/052/645/660/large/chrysope-battle-background-new.jpg')";
@@ -32,6 +32,9 @@ battleGround.style["background-size"] = "cover";
 battleGround.style["background-position"] = "center";
 battleGround.style["min-height"] = "640px";
 battleGround.style.overflow = "hidden";
+
+battleContainer.style.position = "relative";
+battleContainer.style.padding = "300px";
 
 let currentEnemyRandomPokemon = null;
 
@@ -148,28 +151,29 @@ function myTeamPokemon(addedPokemon) {
 }
 
 async function showEnemyPokemon() {
+  battleContainer.innerHTML = "";
   try {
     const enemyPokemon = await fetchRandomEnemyPokemon();
 
     const enemyPokemonCard = document.createElement("div");
     enemyPokemonCard.className = "enemyimg-container";
     enemyPokemonCard.innerHTML = `<img src="${enemyPokemon.pokemonEnemyFrontImage}" alt="${enemyPokemon.pokemonEnemyName}" height="150" width="150">
-                                  <div>${enemyPokemon.pokemonEnemyName}<br/>
+                                  <div style="background-color: #71C558;">${enemyPokemon.pokemonEnemyName}<br/>
                                  ${enemyPokemon.pokemonEnemyHP} / ${enemyPokemon.pokemonEnemyHP}<br/>
                                  Attack Damage: ${enemyPokemon.pokemonEnemyAttack}</div>`;
     enemyPokemonCard.style.position = "absolute";
     enemyPokemonCard.style.top = "50%";
-    enemyPokemonCard.style.left = "50%";
+    enemyPokemonCard.style.left = "58%";
     enemyPokemonCard.style.transform = "translate(-50%, -50%)";
 
-    battleGround.appendChild(enemyPokemonCard);
+    battleContainer.appendChild(enemyPokemonCard);
   } catch (error) {
     console.error("Unable to display the enemy Pokemon", error);
   }
 }
 
 function showTeamPokemon() {
-  battleGround.innerHTML = "";
+  battleContainer.innerHTML = "";
 
   const teamPokemon = JSON.parse(localStorage.getItem("teamPokemon")) || [];
 
@@ -180,7 +184,7 @@ function showTeamPokemon() {
 
     pokedexCard.className = `pokeimg-container-${index}`;
     pokedexCard.innerHTML = `<img src="${pokeMonster.pokemonBackImage}" alt="${pokeMonster.pokemonName}" height="150" width="150">
-                              <div>${pokeMonster.pokemonName}<br/>
+                              <div style="background-color: #71C558;">${pokeMonster.pokemonName}<br/>
                                  ${pokeMonster.pokemonHP} / ${pokeMonster.pokemonHP}</div>`;
     pokedexCard.style.position = "absolute";
     pokedexCard.style.bottom = "5%";
@@ -199,7 +203,7 @@ function showTeamPokemon() {
       attackEnemyPokemon(attackerPokemon);
     });
 
-    battleGround.appendChild(pokedexCard);
+    battleContainer.appendChild(pokedexCard);
   });
 }
 
@@ -312,6 +316,7 @@ function attackMyTeamPokemon(pokemonWhoAttacked, enemyPokemon) {
       }
     }
 
+    //updates the HP everytime the specific pokemon has been attacked
     myTeamPokemon.forEach((pokeMonster, index) => {
       if (pokeMonster.pokemonNumber === pokemonWhoAttacked.pokemonNumber) {
         const pokedexCard = document.querySelector(
