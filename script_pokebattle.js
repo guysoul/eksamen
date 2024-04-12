@@ -99,10 +99,8 @@ async function fetchRandomEnemyPokemon() {
     if (currentEnemyRandomPokemon) {
       return currentEnemyRandomPokemon;
     }
-    const fetchEnemyResponse = await fetch("https://pokeapi.co/api/v2/pokemon");
-    let enemyData = await fetchEnemyResponse.json();
-    const randomPokemonId = Math.floor(Math.random() * 1000) + 1;
 
+    const randomPokemonId = Math.floor(Math.random() * 1000) + 1;
     const fetchedEnemyResponse = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`
     );
