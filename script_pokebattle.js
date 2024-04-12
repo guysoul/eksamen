@@ -261,6 +261,7 @@ async function attackEnemyPokemon(attackerPokemon) {
     //check when enemy is defeated
     if (fetchedCurrentEnemy.pokemonEnemyHP <= 0) {
       isRandomEnemyDefeated(enemyPokemonCard);
+      return;
     }
 
     //get the list of alive in teampokemon
